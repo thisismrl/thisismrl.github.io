@@ -6,3 +6,6 @@ __pycache__/
 .DS_Store
 deploy_to_github.command
 一键更新官网.command
+启动本地网站.command
+打开后台管理.command
+打开本地网站.command
