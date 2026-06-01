@@ -7,6 +7,21 @@ document.querySelectorAll("form[data-confirm]").forEach((form) => {
   });
 });
 
+document.querySelectorAll("[data-confirm-batch]").forEach((button) => {
+  button.addEventListener("click", (event) => {
+    const form = button.closest("form");
+    const selected = form ? form.querySelectorAll('input[name="selected_photo"]:checked').length : 0;
+    if (!selected) {
+      event.preventDefault();
+      window.alert("请先选择要删除的照片。");
+      return;
+    }
+    if (!window.confirm(`确定删除选中的 ${selected} 张照片吗？此操作会同时删除展示图和封面图。`)) {
+      event.preventDefault();
+    }
+  });
+});
+
 const input = document.getElementById("markdown-input");
 const preview = document.getElementById("markdown-preview");
 

@@ -44,6 +44,7 @@ from models import (
     save_collection,
     save_home_slideshow,
     save_photo,
+    save_photo_batch,
     set_setting,
 )
 
@@ -360,6 +361,52 @@ def admin_collection_edit(collection_id):
     )
 
 
+@app.route("/admin/collections/<int:collection_id>/photos", methods=["POST"])
+@login_required
+def admin_collection_photos(collection_id):
+    collection = get_collection(collection_id)
+    if not collection:
+        abort(404)
+    action = request.form.get("action")
+    selected_ids = request.form.getlist("selected_photo")
+    photos = photo_list(collection_id=collection_id)
+    photo_by_id = {str(photo["id"]): photo for photo in photos}
+
+    if action == "delete":
+        for photo_id in selected_ids:
+            photo = photo_by_id.get(str(photo_id))
+            if photo:
+                remove_photo_files(photo)
+                delete_photo(photo_id)
+        flash(f"已删除 {len(selected_ids)} 张照片。", "success")
+        return redirect(url_for("admin_collection_edit", collection_id=collection_id))
+
+    if not any(key.startswith("title_") for key in request.form.keys()):
+        flash("没有收到照片更新内容。", "error")
+        return redirect(url_for("admin_collection_edit", collection_id=collection_id))
+
+    updates = {}
+    for photo in photos:
+        photo_id = str(photo["id"])
+        updates[photo_id] = {
+            "title": request.form.get(f"title_{photo_id}", ""),
+            "description": request.form.get(f"description_{photo_id}", ""),
+            "sort_order": request.form.get(f"sort_order_{photo_id}", "0"),
+            "featured_order": request.form.get(f"featured_order_{photo_id}", "0"),
+            "is_featured": request.form.get(f"is_featured_{photo_id}"),
+        }
+    save_photo_batch(updates)
+    cover_photo_id = request.form.get("cover_photo_id")
+    with get_db() as conn:
+        conn.execute(
+            "UPDATE collections SET cover_photo_id = ?, updated_at = ? WHERE id = ?",
+            (cover_photo_id or None, datetime.now().strftime("%Y-%m-%d %H:%M:%S"), collection_id),
+        )
+        conn.commit()
+    flash("照片信息已保存。", "success")
+    return redirect(url_for("admin_collection_edit", collection_id=collection_id))
+
+
 @app.route("/admin/collections/<int:collection_id>/delete", methods=["POST"])
 @login_required
 def admin_collection_delete(collection_id):
@@ -396,6 +443,7 @@ def admin_home_slideshow():
 @login_required
 def admin_photo_upload():
     collections = collection_list()
+    preselected_collection_id = request.args.get("collection_id", "")
     if request.method == "POST":
         file_storages = [file for file in request.files.getlist("images") if file and file.filename]
         if not file_storages:
@@ -423,10 +471,10 @@ def admin_photo_upload():
                     )
                     conn.commit()
             flash(f"已上传 {len(uploaded_ids)} 张照片。", "success")
-            return redirect(url_for("admin_photos"))
+            return redirect(url_for("admin_collection_edit", collection_id=collection_id))
         except Exception as exc:
             flash(f"无法上传照片：{exc}", "error")
-    return render_template("admin/photo_upload.html", collections=collections)
+    return render_template("admin/photo_upload.html", collections=collections, preselected_collection_id=preselected_collection_id)
 
 
 @app.route("/admin/photos/<int:photo_id>/edit", methods=["GET", "POST"])

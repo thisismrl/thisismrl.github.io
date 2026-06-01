@@ -32,6 +32,58 @@
   <div class="form-actions">
     <button type="submit">保存</button>
     <a href="/admin/collections">取消</a>
+    {% if not is_new %}<a href="/admin/photos/upload?collection_id={{ collection.id }}">上传照片到此作品集</a>{% endif %}
   </div>
 </form>
+
+{% if not is_new %}
+  <section class="admin-subsection">
+    <div class="admin-title with-action">
+      <div>
+        <h1>照片</h1>
+        <p>在这里管理此作品集里的照片、排序、封面和首页轮播。</p>
+      </div>
+      <a class="button" href="/admin/photos/upload?collection_id={{ collection.id }}">上传照片</a>
+    </div>
+
+    <form method="post" action="/admin/collections/{{ collection.id }}/photos" data-batch-photo-form>
+      {% if photos %}
+        <label>作品集封面
+          <select name="cover_photo_id">
+            <option value="">无</option>
+            {% for photo in photos %}
+              <option value="{{ photo.id }}" {% if collection.cover_photo_id == photo.id %}selected{% endif %}>{{ photo.title or photo.filename }}</option>
+            {% endfor %}
+          </select>
+        </label>
+
+        <div class="collection-photo-grid">
+          {% for photo in photos %}
+            <div class="collection-photo-item">
+              <label class="checkbox select-photo"><input type="checkbox" name="selected_photo" value="{{ photo.id }}"> 选择</label>
+              {% if photo.display_filename %}<img src="/uploads/display/{{ photo.display_filename }}" alt="{{ photo.title or photo.filename }}">{% endif %}
+              <div class="collection-photo-fields">
+                <label>标题<input name="title_{{ photo.id }}" value="{{ photo.title or '' }}"></label>
+                <label>描述<textarea name="description_{{ photo.id }}" rows="2">{{ photo.description or '' }}</textarea></label>
+                <div class="form-grid compact-grid">
+                  <label>作品排序<input type="number" name="sort_order_{{ photo.id }}" value="{{ photo.sort_order or 0 }}"></label>
+                  <label>轮播排序<input type="number" name="featured_order_{{ photo.id }}" value="{{ photo.featured_order or 0 }}"></label>
+                </div>
+                <label class="checkbox"><input type="checkbox" name="is_featured_{{ photo.id }}" value="1" {% if photo.is_featured %}checked{% endif %}> 加入首页轮播</label>
+                <a href="/admin/photos/{{ photo.id }}/edit">单独编辑</a>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" name="action" value="save">保存照片信息</button>
+          <button class="danger-button" type="submit" name="action" value="delete" data-confirm-batch>删除选中照片</button>
+        </div>
+      {% else %}
+        <p class="empty">这个作品集还没有照片。</p>
+      {% endif %}
+    </form>
+  </section>
+{% endif %}
 {% endblock %}

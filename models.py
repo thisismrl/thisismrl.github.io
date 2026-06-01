@@ -192,6 +192,24 @@ def delete_photo(photo_id):
         conn.commit()
 
 
+def save_photo_batch(photo_updates):
+    with get_db() as conn:
+        for photo_id, data in photo_updates.items():
+            conn.execute(
+                "UPDATE photos SET title = ?, description = ?, sort_order = ?, is_featured = ?, featured_order = ?, updated_at = ? WHERE id = ?",
+                (
+                    data.get("title", "").strip(),
+                    data.get("description", "").strip(),
+                    int(data.get("sort_order") or 0),
+                    1 if data.get("is_featured") else 0,
+                    int(data.get("featured_order") or 0),
+                    now_iso(),
+                    int(photo_id),
+                ),
+            )
+        conn.commit()
+
+
 def article_list(status=None, limit=None):
     sql = "SELECT * FROM articles "
     params = []

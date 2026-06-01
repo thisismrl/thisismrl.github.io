@@ -40,6 +40,11 @@ button,
   cursor: pointer;
 }
 
+.danger-button {
+  border-color: #9a3a3a;
+  background: #9a3a3a;
+}
+
 input,
 textarea,
 select {
@@ -100,6 +105,12 @@ label {
 .admin-title p {
   margin: 0;
   color: var(--muted);
+}
+
+.admin-subsection {
+  margin-top: 56px;
+  padding-top: 32px;
+  border-top: 1px solid var(--line);
 }
 
 .with-action {
@@ -280,6 +291,10 @@ label {
   gap: 18px;
 }
 
+.compact-grid {
+  gap: 10px;
+}
+
 .checkbox {
   display: flex;
   align-items: center;
@@ -300,6 +315,43 @@ label {
 .photo-admin-grid {
   display: grid;
   gap: 18px;
+}
+
+.collection-photo-grid {
+  display: grid;
+  gap: 18px;
+  margin-top: 18px;
+}
+
+.collection-photo-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 18px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  background: #fff;
+}
+
+.collection-photo-item img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  background: #eee;
+}
+
+.collection-photo-fields {
+  display: grid;
+  gap: 12px;
+}
+
+.select-photo {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 1;
+  background: rgba(255, 255, 255, 0.88);
+  padding: 4px 7px;
 }
 
 .slideshow-admin-grid {
@@ -405,7 +457,8 @@ label {
   .table-row,
   .photo-admin-item,
   .slideshow-admin-grid,
-  .slideshow-item {
+  .slideshow-item,
+  .collection-photo-item {
     grid-template-columns: 1fr;
   }
 
