@@ -12,8 +12,8 @@
     <label>Slug<input name="slug" value="{{ article.slug or '' }}"></label>
     <label>分类
       <select name="category" data-article-category>
-        {% for category, label in [("Essay", "散文 Essay"), ("Fiction", "小说 Fiction"), ("Suibi", "随笔"), ("Notes", "Notes")] %}
-          <option value="{{ category }}" {% if article.category == category %}selected{% endif %}>{{ label }}</option>
+        {% for category in ["Essay", "Fiction", "Notes"] %}
+          <option value="{{ category }}" {% if article.category == category %}selected{% endif %}>{{ category }}</option>
         {% endfor %}
       </select>
     </label>
@@ -34,13 +34,12 @@
         <img class="article-cover-preview" src="{{ article.cover_image }}" alt="当前封面">
         <label class="checkbox"><input type="checkbox" name="clear_cover" value="1"> 删除当前封面</label>
       {% endif %}
-      <p class="form-note">散文、小说、随笔可上传封面；Notes 会自动忽略封面。</p>
+      <p class="form-note">Essay / Fiction 可上传封面；Notes 会自动忽略封面。</p>
     </div>
   </div>
   <div class="type-guides">
-    <p data-guide="Essay"><strong>Essay / 散文</strong>：完整散文。封面和摘要会用于文字页与动态页；摘要为空时会从正文自动生成。</p>
+    <p data-guide="Essay"><strong>Essay</strong>：散文或随笔。封面和摘要会用于文字页与动态页；摘要为空时会从正文自动生成。</p>
     <p data-guide="Fiction"><strong>Fiction</strong>：小说或故事。正文使用 Markdown；封面可选。</p>
-    <p data-guide="Suibi"><strong>随笔</strong>：较完整的随笔文章，展示方式与散文一致；封面可选。</p>
     <p data-guide="Notes"><strong>Notes</strong>：短札、日记或片段。封面会被忽略；标题或摘要为空时，系统会根据日期和正文自动生成。</p>
   </div>
   <label>摘要<textarea name="summary" rows="3" data-summary-field>{{ article.summary or '' }}</textarea></label>

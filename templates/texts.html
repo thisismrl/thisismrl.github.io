@@ -10,7 +10,7 @@
           class="texts-switch{% if category == active_category %} is-active{% endif %}"
           href="/texts/{{ category|lower }}/"
           data-category="{{ category }}"
-        >{% if category == "Essay" %}散文{% elif category == "Fiction" %}小说{% elif category == "Suibi" %}随笔{% elif category == "Notes" %}Notes{% else %}{{ category }}{% endif %}</a>
+        >{% if category == "Essay" %}散文{% elif category == "Fiction" %}小说{% else %}随笔{% endif %}</a>
       {% endfor %}
     </nav>
   </aside>
@@ -38,7 +38,7 @@
                     <img src="{{ article.cover_image }}" alt="{{ article.title }}">
                   {% endif %}
                 </span>
-                <span class="article-kind">{% if article.category == "Essay" %}散文{% elif article.category == "Fiction" %}小说{% elif article.category == "Suibi" %}随笔{% elif article.category == "Notes" %}Notes{% else %}{{ article.category }}{% endif %}</span>
+                <span class="article-kind">{% if article.category == "Essay" %}散文{% elif article.category == "Fiction" %}小说{% else %}随笔{% endif %}</span>
                 <span class="article-title">{{ article.title }}</span>
                 {% if article.summary %}<span class="article-summary">{{ article.summary }}</span>{% endif %}
                 {% if article.published_at %}<span class="article-date">{{ article.published_at[:10] }}</span>{% endif %}

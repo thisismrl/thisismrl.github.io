@@ -54,8 +54,6 @@ app = Flask(__name__)
 app.secret_key = read_secret_key()
 init_db()
 
-TEXT_CATEGORIES = ["Essay", "Fiction", "Suibi", "Notes"]
-
 
 def slugify(value):
     value = value.lower().strip()
@@ -83,8 +81,6 @@ def text_excerpt(text, length=120):
 def normalize_article_data(form):
     data = form.to_dict()
     category = data.get("category", "Essay").strip() or "Essay"
-    if category not in TEXT_CATEGORIES:
-        category = "Essay"
     data["category"] = category
     data["status"] = data.get("status", "draft").strip() or "draft"
     data["content_markdown"] = data.get("content_markdown", "").strip()
@@ -234,20 +230,18 @@ def work_detail(slug):
 @app.route("/texts/")
 def texts():
     articles = article_list(status="published")
-    categories = TEXT_CATEGORIES
+    categories = ["Essay", "Fiction", "Notes"]
     grouped = {category: [a for a in articles if a["category"] == category] for category in categories}
     return render_template("texts.html", articles=articles, grouped=grouped, categories=categories, active_category="Essay")
 
 
 @app.route("/texts/essay/")
 @app.route("/texts/fiction/")
-@app.route("/texts/suibi/")
 @app.route("/texts/notes/")
 def text_category():
     category_map = {
         "essay": "Essay",
         "fiction": "Fiction",
-        "suibi": "Suibi",
         "notes": "Notes",
     }
     slug = request.path.strip("/").split("/")[-1]
@@ -255,7 +249,7 @@ def text_category():
     if not category:
         abort(404)
     articles = article_list(status="published")
-    categories = TEXT_CATEGORIES
+    categories = ["Essay", "Fiction", "Notes"]
     grouped = {item: [a for a in articles if a["category"] == item] for item in categories}
     return render_template("texts.html", articles=articles, grouped=grouped, categories=categories, active_category=category)
 

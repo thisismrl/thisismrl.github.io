@@ -6,7 +6,7 @@
   <header class="text-header">
     <a class="back-link" href="/texts/">Texts</a>
     <h1>{{ article.title }}</h1>
-    <p class="muted">{% if article.category == "Essay" %}散文{% elif article.category == "Fiction" %}小说{% elif article.category == "Suibi" %}随笔{% elif article.category == "Notes" %}Notes{% else %}{{ article.category }}{% endif %} / {{ (article.published_at or '')[:10] }}</p>
+    <p class="muted">{{ article.category }} / {{ (article.published_at or '')[:10] }}</p>
     {% if article.cover_image %}
       <img class="text-cover" src="{{ article.cover_image }}" alt="{{ article.title }}">
     {% endif %}
