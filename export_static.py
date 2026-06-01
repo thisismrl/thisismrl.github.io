@@ -39,6 +39,7 @@ def export_site(flask_app=None):
         ("/texts/", DOCS_DIR / "texts" / "index.html"),
         ("/texts/essay/", DOCS_DIR / "texts" / "essay" / "index.html"),
         ("/texts/fiction/", DOCS_DIR / "texts" / "fiction" / "index.html"),
+        ("/texts/suibi/", DOCS_DIR / "texts" / "suibi" / "index.html"),
         ("/texts/notes/", DOCS_DIR / "texts" / "notes" / "index.html"),
         ("/archive/", DOCS_DIR / "archive" / "index.html"),
         ("/about/", DOCS_DIR / "about" / "index.html"),

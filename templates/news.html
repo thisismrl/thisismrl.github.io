@@ -14,7 +14,7 @@
           </span>
         {% endif %}
         <span class="news-body">
-          <span class="news-kind">{% if item.kind == "Essay" %}散文{% elif item.kind == "Fiction" %}小说{% elif item.kind == "Notes" %}随笔{% else %}{{ item.kind }}{% endif %}{% if item.meta %} / {{ item.meta }}{% endif %}</span>
+          <span class="news-kind">{% if item.kind == "Essay" %}散文{% elif item.kind == "Fiction" %}小说{% elif item.kind == "Suibi" %}随笔{% elif item.kind == "Notes" %}Notes{% else %}{{ item.kind }}{% endif %}{% if item.meta %} / {{ item.meta }}{% endif %}</span>
           <span class="news-title">{{ item.title }}</span>
           {% if item.summary %}<span class="news-summary">{{ item.summary }}</span>{% endif %}
         </span>
