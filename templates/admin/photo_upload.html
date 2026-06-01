@@ -15,6 +15,14 @@
       {% endfor %}
     </select>
   </label>
+  <label>时间线分组
+    <select name="timeline_id">
+      <option value="">暂不归入时间线</option>
+      {% for timeline in timelines %}
+        <option value="{{ timeline.id }}">{{ timeline.title }}</option>
+      {% endfor %}
+    </select>
+  </label>
   <label>照片<input type="file" name="images" accept="image/*" multiple required></label>
   <div class="form-grid">
     <label>标题<input name="title"></label>

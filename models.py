@@ -57,14 +57,35 @@ def collection_list(featured=None):
         return rows_to_dicts(conn.execute(sql, params).fetchall())
 
 
+def timeline_list():
+    sql = (
+        "SELECT t.*, p.cover_filename, p.display_filename "
+        "FROM timelines t "
+        "LEFT JOIN photos p ON p.id = t.cover_photo_id "
+        "ORDER BY t.sort_order ASC, t.year DESC, t.created_at DESC"
+    )
+    with get_db() as conn:
+        return rows_to_dicts(conn.execute(sql).fetchall())
+
+
 def get_collection(collection_id):
     with get_db() as conn:
         return row_to_dict(conn.execute("SELECT * FROM collections WHERE id = ?", (collection_id,)).fetchone())
 
 
+def get_timeline(timeline_id):
+    with get_db() as conn:
+        return row_to_dict(conn.execute("SELECT * FROM timelines WHERE id = ?", (timeline_id,)).fetchone())
+
+
 def get_collection_by_slug(slug):
     with get_db() as conn:
         return row_to_dict(conn.execute("SELECT * FROM collections WHERE slug = ?", (slug,)).fetchone())
+
+
+def get_timeline_by_slug(slug):
+    with get_db() as conn:
+        return row_to_dict(conn.execute("SELECT * FROM timelines WHERE slug = ?", (slug,)).fetchone())
 
 
 def save_collection(data, collection_id=None):
@@ -99,6 +120,36 @@ def save_collection(data, collection_id=None):
         conn.commit()
 
 
+def save_timeline(data, timeline_id=None):
+    timestamp = now_iso()
+    values = {
+        "slug": data.get("slug", "").strip(),
+        "title": data.get("title", "").strip(),
+        "description": data.get("description", "").strip(),
+        "year": data.get("year", "").strip(),
+        "location": data.get("location", "").strip(),
+        "cover_photo_id": data.get("cover_photo_id") or None,
+        "sort_order": int(data.get("sort_order") or 0),
+        "updated_at": timestamp,
+    }
+    with get_db() as conn:
+        if timeline_id:
+            assignments = ", ".join(f"{key} = ?" for key in values.keys())
+            conn.execute(
+                f"UPDATE timelines SET {assignments} WHERE id = ?",
+                [*values.values(), timeline_id],
+            )
+        else:
+            values["created_at"] = timestamp
+            columns = ", ".join(values.keys())
+            placeholders = ", ".join("?" for _ in values)
+            conn.execute(
+                f"INSERT INTO timelines ({columns}) VALUES ({placeholders})",
+                list(values.values()),
+            )
+        conn.commit()
+
+
 def delete_collection(collection_id):
     with get_db() as conn:
         conn.execute("DELETE FROM collections WHERE id = ?", (collection_id,))
@@ -106,16 +157,28 @@ def delete_collection(collection_id):
         conn.commit()
 
 
-def photo_list(collection_id=None, featured=None):
+def delete_timeline(timeline_id):
+    with get_db() as conn:
+        conn.execute("UPDATE photos SET timeline_id = NULL WHERE timeline_id = ?", (timeline_id,))
+        conn.execute("DELETE FROM timelines WHERE id = ?", (timeline_id,))
+        conn.commit()
+
+
+def photo_list(collection_id=None, timeline_id=None, featured=None):
     sql = (
-        "SELECT p.*, c.title AS collection_title "
-        "FROM photos p JOIN collections c ON c.id = p.collection_id "
+        "SELECT p.*, c.title AS collection_title, t.title AS timeline_title "
+        "FROM photos p "
+        "JOIN collections c ON c.id = p.collection_id "
+        "LEFT JOIN timelines t ON t.id = p.timeline_id "
     )
     clauses = []
     params = []
     if collection_id:
         clauses.append("p.collection_id = ?")
         params.append(collection_id)
+    if timeline_id:
+        clauses.append("p.timeline_id = ?")
+        params.append(timeline_id)
     if featured is not None:
         clauses.append("p.is_featured = ?")
         params.append(1 if featured else 0)
@@ -138,6 +201,7 @@ def save_photo(data, filenames=None, photo_id=None):
     timestamp = now_iso()
     values = {
         "collection_id": int(data.get("collection_id") or 0),
+        "timeline_id": int(data.get("timeline_id")) if data.get("timeline_id") else None,
         "title": data.get("title", "").strip(),
         "description": data.get("description", "").strip(),
         "shot_date": data.get("shot_date", "").strip(),
@@ -188,6 +252,7 @@ def save_home_slideshow(selected_ids, order_map):
 def delete_photo(photo_id):
     with get_db() as conn:
         conn.execute("UPDATE collections SET cover_photo_id = NULL WHERE cover_photo_id = ?", (photo_id,))
+        conn.execute("UPDATE timelines SET cover_photo_id = NULL WHERE cover_photo_id = ?", (photo_id,))
         conn.execute("DELETE FROM photos WHERE id = ?", (photo_id,))
         conn.commit()
 
@@ -196,10 +261,11 @@ def save_photo_batch(photo_updates):
     with get_db() as conn:
         for photo_id, data in photo_updates.items():
             conn.execute(
-                "UPDATE photos SET title = ?, description = ?, sort_order = ?, is_featured = ?, featured_order = ?, updated_at = ? WHERE id = ?",
+                "UPDATE photos SET title = ?, description = ?, timeline_id = ?, sort_order = ?, is_featured = ?, featured_order = ?, updated_at = ? WHERE id = ?",
                 (
                     data.get("title", "").strip(),
                     data.get("description", "").strip(),
+                    int(data.get("timeline_id")) if data.get("timeline_id") else None,
                     int(data.get("sort_order") or 0),
                     1 if data.get("is_featured") else 0,
                     int(data.get("featured_order") or 0),
@@ -270,6 +336,7 @@ def dashboard_counts():
     with get_db() as conn:
         return {
             "collections": conn.execute("SELECT COUNT(*) AS n FROM collections").fetchone()["n"],
+            "timelines": conn.execute("SELECT COUNT(*) AS n FROM timelines").fetchone()["n"],
             "photos": conn.execute("SELECT COUNT(*) AS n FROM photos").fetchone()["n"],
             "published": conn.execute("SELECT COUNT(*) AS n FROM articles WHERE status = 'published'").fetchone()["n"],
             "drafts": conn.execute("SELECT COUNT(*) AS n FROM articles WHERE status = 'draft'").fetchone()["n"],

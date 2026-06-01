@@ -65,6 +65,14 @@
               <div class="collection-photo-fields">
                 <label>标题<input name="title_{{ photo.id }}" value="{{ photo.title or '' }}"></label>
                 <label>描述<textarea name="description_{{ photo.id }}" rows="2">{{ photo.description or '' }}</textarea></label>
+                <label>时间线分组
+                  <select name="timeline_id_{{ photo.id }}">
+                    <option value="">未归入时间线</option>
+                    {% for timeline in timelines %}
+                      <option value="{{ timeline.id }}" {% if photo.timeline_id == timeline.id %}selected{% endif %}>{{ timeline.title }}</option>
+                    {% endfor %}
+                  </select>
+                </label>
                 <div class="form-grid compact-grid">
                   <label>作品排序<input type="number" name="sort_order_{{ photo.id }}" value="{{ photo.sort_order or 0 }}"></label>
                   <label>轮播排序<input type="number" name="featured_order_{{ photo.id }}" value="{{ photo.featured_order or 0 }}"></label>

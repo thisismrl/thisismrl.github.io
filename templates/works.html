@@ -2,11 +2,48 @@
 {% block title %}Works / {{ site_settings.site_name }}{% endblock %}
 
 {% block content %}
-{% set first = collections[0] if collections else none %}
+{% set first_timeline = timelines[0] if timelines else none %}
+{% set first_collection = collections[0] if collections else none %}
+{% set initial = first_timeline or first_collection %}
+{% set initial_kind = 'timeline' if first_timeline else 'series' %}
 
-<section class="works-browser" data-works-browser>
+<section class="works-browser three-column-works" data-works-browser>
+  <aside class="works-mode-menu">
+    <nav aria-label="Work views">
+      <a class="works-mode-switch{% if initial_kind == 'timeline' %} is-active{% endif %}" href="/works/" data-mode="timeline">以时间线</a>
+      <a class="works-mode-switch{% if initial_kind == 'series' %} is-active{% endif %}" href="/works/" data-mode="series">以作品集</a>
+    </nav>
+  </aside>
+
   <div class="works-menu">
-    <nav aria-label="Work series">
+    <nav class="works-list{% if initial_kind == 'timeline' %} is-active{% endif %}" aria-label="Timeline groups" data-mode-panel="timeline">
+      {% for timeline in timelines %}
+        {% set image_path = '' %}
+        {% if timeline.cover_filename %}
+          {% set image_path = '/uploads/covers/' ~ timeline.cover_filename %}
+        {% elif timeline.display_filename %}
+          {% set image_path = '/uploads/display/' ~ timeline.display_filename %}
+        {% endif %}
+        <a
+          class="works-switch{% if initial_kind == 'timeline' and loop.first %} is-active{% endif %}"
+          href="/works/timeline/{{ timeline.slug }}/"
+          data-kind="timeline"
+          data-title="{{ timeline.title }}"
+          data-year="{{ timeline.year or 'Undated' }}"
+          data-location="{{ timeline.location or '' }}"
+          data-description="{{ timeline.description or '' }}"
+          data-image="{{ image_path }}"
+          data-url="/works/timeline/{{ timeline.slug }}/"
+        >
+          <span>{{ timeline.title }}</span>
+          <span>{{ timeline.year or 'Undated' }}</span>
+        </a>
+      {% else %}
+        <p class="empty-note">No timeline groups yet.</p>
+      {% endfor %}
+    </nav>
+
+    <nav class="works-list{% if initial_kind == 'series' %} is-active{% endif %}" aria-label="Work series" data-mode-panel="series">
       {% for collection in collections %}
         {% set image_path = '' %}
         {% if collection.cover_filename %}
@@ -15,8 +52,9 @@
           {% set image_path = '/uploads/display/' ~ collection.display_filename %}
         {% endif %}
         <a
-          class="works-switch{% if loop.first %} is-active{% endif %}"
+          class="works-switch{% if initial_kind == 'series' and loop.first %} is-active{% endif %}"
           href="/works/{{ collection.slug }}/"
+          data-kind="series"
           data-title="{{ collection.title }}"
           data-year="{{ collection.year or 'Undated' }}"
           data-location="{{ collection.location or '' }}"
@@ -28,35 +66,37 @@
           <span>{{ collection.year or 'Undated' }}</span>
         </a>
       {% else %}
-        <p class="empty-note">No works yet.</p>
+        <p class="empty-note">No work series yet.</p>
       {% endfor %}
     </nav>
   </div>
 
-  {% if first %}
+  {% if initial %}
     {% set first_image = '' %}
-    {% if first.cover_filename %}
-      {% set first_image = '/uploads/covers/' ~ first.cover_filename %}
-    {% elif first.display_filename %}
-      {% set first_image = '/uploads/display/' ~ first.display_filename %}
+    {% if initial.cover_filename %}
+      {% set first_image = '/uploads/covers/' ~ initial.cover_filename %}
+    {% elif initial.display_filename %}
+      {% set first_image = '/uploads/display/' ~ initial.display_filename %}
     {% endif %}
     <div class="works-preview">
-      <a class="works-preview-image" href="/works/{{ first.slug }}/" data-preview-link>
+      <a class="works-preview-image" href="{% if initial_kind == 'timeline' %}/works/timeline/{{ initial.slug }}/{% else %}/works/{{ initial.slug }}/{% endif %}" data-preview-link>
         {% if first_image %}
-          <img src="{{ first_image }}" alt="{{ first.title }}" data-preview-image>
+          <img src="{{ first_image }}" alt="{{ initial.title }}" data-preview-image>
         {% else %}
           <span class="quiet-placeholder" data-preview-placeholder>No image selected yet.</span>
         {% endif %}
       </a>
       <div class="works-preview-caption">
         <div>
-          <h2 data-preview-title>{{ first.title }}</h2>
-          <p data-preview-meta>{{ first.year or 'Undated' }}{% if first.location %} / {{ first.location }}{% endif %}</p>
-          {% if first.description %}<p data-preview-description>{{ first.description }}</p>{% else %}<p data-preview-description></p>{% endif %}
+          <h2 data-preview-title>{{ initial.title }}</h2>
+          <p data-preview-meta>{{ initial.year or 'Undated' }}{% if initial.location %} / {{ initial.location }}{% endif %}</p>
+          {% if initial.description %}<p data-preview-description>{{ initial.description }}</p>{% else %}<p data-preview-description></p>{% endif %}
         </div>
-        <a href="/works/{{ first.slug }}/" data-preview-open>Open series</a>
+        <a href="{% if initial_kind == 'timeline' %}/works/timeline/{{ initial.slug }}/{% else %}/works/{{ initial.slug }}/{% endif %}" data-preview-open>Open</a>
       </div>
     </div>
+  {% else %}
+    <p class="empty-note">No works yet.</p>
   {% endif %}
 </section>
 {% endblock %}

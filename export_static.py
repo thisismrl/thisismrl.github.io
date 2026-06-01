@@ -2,7 +2,7 @@ from pathlib import Path
 import shutil
 
 from config import BASE_DIR, DOCS_DIR
-from models import article_list, collection_list
+from models import article_list, collection_list, timeline_list
 
 
 def write_response(client, route, output_path):
@@ -49,6 +49,12 @@ def export_site(flask_app=None):
         routes.append((
             f"/works/{collection['slug']}/",
             DOCS_DIR / "works" / collection["slug"] / "index.html",
+        ))
+
+    for timeline in timeline_list():
+        routes.append((
+            f"/works/timeline/{timeline['slug']}/",
+            DOCS_DIR / "works" / "timeline" / timeline["slug"] / "index.html",
         ))
 
     for article in article_list(status="published"):

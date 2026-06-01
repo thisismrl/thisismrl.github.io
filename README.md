@@ -54,13 +54,14 @@ instance/admin_password.txt
 ## 上传照片
 
 1. 进入 `/admin/collections/new` 创建摄影作品集。
-2. 进入 `/admin/photos/upload` 上传照片，并选择所属作品集。
-3. 可以一次选择一张或多张照片。
-4. 多张照片会自动接在该作品集现有排序后面。
-5. 可以把第一张上传照片自动设为作品集封面。
-6. 上传后会保留原图到 `uploads/originals/`。
-7. 同时生成前台展示图到 `uploads/display/`，封面图到 `uploads/covers/`。
-8. 前台和静态导出只使用 WebP 展示图，不直接加载原图。
+2. 如果需要按时间整理，进入 `/admin/timelines/new` 创建时间线分组，例如“东京 2025”。
+3. 进入 `/admin/photos/upload` 上传照片，并选择所属作品集；也可以同时选择时间线分组。
+4. 可以一次选择一张或多张照片。
+5. 多张照片会自动接在该作品集现有排序后面。
+6. 可以把第一张上传照片自动设为作品集封面。
+7. 上传后会保留原图到 `uploads/originals/`。
+8. 同时生成前台展示图到 `uploads/display/`，封面图到 `uploads/covers/`。
+9. 前台和静态导出只使用 WebP 展示图，不直接加载原图。
 
 图片处理规则：
 

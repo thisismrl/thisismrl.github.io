@@ -39,6 +39,8 @@ if (homeSlideshow) {
 const worksBrowser = document.querySelector("[data-works-browser]");
 
 if (worksBrowser) {
+  const modeSwitches = [...worksBrowser.querySelectorAll(".works-mode-switch")];
+  const modePanels = [...worksBrowser.querySelectorAll("[data-mode-panel]")];
   const switches = [...worksBrowser.querySelectorAll(".works-switch")];
   const previewLink = worksBrowser.querySelector("[data-preview-link]");
   const previewOpen = worksBrowser.querySelector("[data-preview-open]");
@@ -47,31 +49,50 @@ if (worksBrowser) {
   const previewMeta = worksBrowser.querySelector("[data-preview-meta]");
   const previewDescription = worksBrowser.querySelector("[data-preview-description]");
 
+  const updatePreview = (item) => {
+    if (!item) return;
+
+    switches.forEach((other) => other.classList.remove("is-active"));
+    item.classList.add("is-active");
+
+    const title = item.dataset.title || "";
+    const year = item.dataset.year || "";
+    const location = item.dataset.location || "";
+    const description = item.dataset.description || "";
+    const image = item.dataset.image || "";
+    const url = item.dataset.url || item.getAttribute("href") || "#";
+
+    if (previewLink) previewLink.setAttribute("href", url);
+    if (previewOpen) previewOpen.setAttribute("href", url);
+    if (previewTitle) previewTitle.textContent = title;
+    if (previewMeta) previewMeta.textContent = location ? `${year} / ${location}` : year;
+    if (previewDescription) previewDescription.textContent = description;
+
+    if (previewImage && image) {
+      previewImage.setAttribute("src", image);
+      previewImage.setAttribute("alt", title);
+      previewImage.hidden = false;
+    }
+  };
+
+  const activateMode = (mode) => {
+    modeSwitches.forEach((item) => item.classList.toggle("is-active", item.dataset.mode === mode));
+    modePanels.forEach((panel) => panel.classList.toggle("is-active", panel.dataset.modePanel === mode));
+    const firstItem = worksBrowser.querySelector(`[data-mode-panel="${mode}"] .works-switch`);
+    updatePreview(firstItem);
+  };
+
+  modeSwitches.forEach((item) => {
+    item.addEventListener("click", (event) => {
+      event.preventDefault();
+      activateMode(item.dataset.mode || "timeline");
+    });
+  });
+
   switches.forEach((item) => {
     item.addEventListener("click", (event) => {
       event.preventDefault();
-
-      switches.forEach((other) => other.classList.remove("is-active"));
-      item.classList.add("is-active");
-
-      const title = item.dataset.title || "";
-      const year = item.dataset.year || "";
-      const location = item.dataset.location || "";
-      const description = item.dataset.description || "";
-      const image = item.dataset.image || "";
-      const url = item.dataset.url || item.getAttribute("href") || "#";
-
-      if (previewLink) previewLink.setAttribute("href", url);
-      if (previewOpen) previewOpen.setAttribute("href", url);
-      if (previewTitle) previewTitle.textContent = title;
-      if (previewMeta) previewMeta.textContent = location ? `${year} / ${location}` : year;
-      if (previewDescription) previewDescription.textContent = description;
-
-      if (previewImage && image) {
-        previewImage.setAttribute("src", image);
-        previewImage.setAttribute("alt", title);
-        previewImage.hidden = false;
-      }
+      updatePreview(item);
     });
   });
 }

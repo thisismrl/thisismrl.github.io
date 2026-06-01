@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}{{ timeline.title }} / Works / {{ site_settings.site_name }}{% endblock %}
+
+{% block content %}
+<article class="work-detail with-fixed-subnav three-column-works">
+  <aside class="works-mode-menu">
+    <nav aria-label="Work views">
+      <a class="works-mode-switch is-active" href="/works/">以时间线</a>
+      <a class="works-mode-switch" href="/works/">以作品集</a>
+    </nav>
+  </aside>
+
+  <aside class="works-menu detail-subnav">
+    <nav class="works-list is-active" aria-label="Timeline groups">
+      {% for item in timelines %}
+        <a class="works-switch{% if item.id == timeline.id %} is-active{% endif %}" href="/works/timeline/{{ item.slug }}/">
+          <span>{{ item.title }}</span>
+          <span>{{ item.year or 'Undated' }}</span>
+        </a>
+      {% endfor %}
+    </nav>
+  </aside>
+
+  <section class="work-scroll">
+    <header class="detail-header">
+      <h1>{{ timeline.title }}</h1>
+      <p class="muted">{{ timeline.year or 'Undated' }}{% if timeline.location %}<br>{{ timeline.location }}{% endif %}</p>
+      {% if timeline.description %}<p>{{ timeline.description }}</p>{% endif %}
+    </header>
+
+    <div class="photo-sequence">
+      {% for photo in photos %}
+        <figure>
+          <img src="/uploads/display/{{ photo.display_filename }}" alt="{{ photo.title or timeline.title }}">
+          {% if photo.title or photo.description or photo.shot_date %}
+            <figcaption>
+              {% if photo.title %}<span>{{ photo.title }}</span>{% endif %}
+              {% if photo.shot_date %}<span>{{ photo.shot_date }}</span>{% endif %}
+              {% if photo.description %}<span>{{ photo.description }}</span>{% endif %}
+            </figcaption>
+          {% endif %}
+        </figure>
+      {% else %}
+        <p class="empty-note">No photos in this timeline yet.</p>
+      {% endfor %}
+    </div>
+  </section>
+</article>
+{% endblock %}

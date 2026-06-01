@@ -28,9 +28,25 @@
     
 
 
-<section class="works-browser" data-works-browser>
+
+
+
+<section class="works-browser three-column-works" data-works-browser>
+  <aside class="works-mode-menu">
+    <nav aria-label="Work views">
+      <a class="works-mode-switch" href="/works/" data-mode="timeline">以时间线</a>
+      <a class="works-mode-switch is-active" href="/works/" data-mode="series">以作品集</a>
+    </nav>
+  </aside>
+
   <div class="works-menu">
-    <nav aria-label="Work series">
+    <nav class="works-list" aria-label="Timeline groups" data-mode-panel="timeline">
+      
+        <p class="empty-note">No timeline groups yet.</p>
+      
+    </nav>
+
+    <nav class="works-list is-active" aria-label="Work series" data-mode-panel="series">
       
         
         
@@ -39,6 +55,7 @@
         <a
           class="works-switch is-active"
           href="/works/东京-tokyo/"
+          data-kind="series"
           data-title="东京 Tokyo"
           data-year="2025"
           data-location="Tokyo"
@@ -55,6 +72,7 @@
         <a
           class="works-switch"
           href="/works/demo-river-light/"
+          data-kind="series"
           data-title="北海道 Hokkaido"
           data-year="2023"
           data-location="Japan Hokkaido"
@@ -86,7 +104,7 @@
           <p data-preview-meta>2025 / Tokyo</p>
           <p data-preview-description></p>
         </div>
-        <a href="/works/东京-tokyo/" data-preview-open>Open series</a>
+        <a href="/works/东京-tokyo/" data-preview-open>Open</a>
       </div>
     </div>
   

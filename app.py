@@ -34,11 +34,14 @@ from models import (
     delete_article,
     delete_collection,
     delete_photo,
+    delete_timeline,
     get_article,
     get_article_by_slug,
     get_collection,
     get_collection_by_slug,
     get_photo,
+    get_timeline,
+    get_timeline_by_slug,
     max_photo_sort_order,
     photo_list,
     save_article,
@@ -46,7 +49,9 @@ from models import (
     save_home_slideshow,
     save_photo,
     save_photo_batch,
+    save_timeline,
     set_setting,
+    timeline_list,
 )
 
 
@@ -118,6 +123,12 @@ def apply_article_cover_upload(data, files):
         data["cover_image"] = f"/uploads/covers/{image_data['cover_filename']}"
 
     return data
+
+
+def timeline_slug_source(data):
+    parts = [data.get("location", "").strip(), data.get("year", "").strip()]
+    value = "-".join(part for part in parts if part)
+    return value or data.get("title", "")
 
 
 def login_required(view):
@@ -215,7 +226,7 @@ def news():
 
 @app.route("/works/")
 def works():
-    return render_template("works.html", collections=collection_list())
+    return render_template("works.html", collections=collection_list(), timelines=timeline_list())
 
 
 @app.route("/works/<slug>/")
@@ -224,7 +235,30 @@ def work_detail(slug):
     if not collection:
         abort(404)
     photos = photo_list(collection_id=collection["id"])
-    return render_template("work_detail.html", collection=collection, photos=photos, collections=collection_list())
+    return render_template(
+        "work_detail.html",
+        collection=collection,
+        photos=photos,
+        collections=collection_list(),
+        timelines=timeline_list(),
+        active_mode="series",
+    )
+
+
+@app.route("/works/timeline/<slug>/")
+def timeline_detail(slug):
+    timeline = get_timeline_by_slug(slug)
+    if not timeline:
+        abort(404)
+    photos = photo_list(timeline_id=timeline["id"])
+    return render_template(
+        "timeline_detail.html",
+        timeline=timeline,
+        photos=photos,
+        collections=collection_list(),
+        timelines=timeline_list(),
+        active_mode="timeline",
+    )
 
 
 @app.route("/texts/")
@@ -336,6 +370,56 @@ def admin_collections():
     return render_template("admin/collections.html", collections=collection_list())
 
 
+@app.route("/admin/timelines")
+@login_required
+def admin_timelines():
+    return render_template("admin/timelines.html", timelines=timeline_list())
+
+
+@app.route("/admin/timelines/new", methods=["GET", "POST"])
+@login_required
+def admin_timeline_new():
+    if request.method == "POST":
+        data = request.form.to_dict()
+        if not data.get("slug"):
+            data["slug"] = slugify(timeline_slug_source(data))
+        try:
+            save_timeline(data)
+            flash("时间线分组已创建。", "success")
+            return redirect(url_for("admin_timelines"))
+        except Exception as exc:
+            flash(f"无法保存时间线分组：{exc}", "error")
+    return render_template("admin/timeline_edit.html", timeline={}, photos=[], is_new=True)
+
+
+@app.route("/admin/timelines/<int:timeline_id>/edit", methods=["GET", "POST"])
+@login_required
+def admin_timeline_edit(timeline_id):
+    timeline = get_timeline(timeline_id)
+    if not timeline:
+        abort(404)
+    photos = photo_list(timeline_id=timeline_id)
+    if request.method == "POST":
+        data = request.form.to_dict()
+        if not data.get("slug"):
+            data["slug"] = slugify(timeline_slug_source(data))
+        try:
+            save_timeline(data, timeline_id=timeline_id)
+            flash("时间线分组已更新。", "success")
+            return redirect(url_for("admin_timelines"))
+        except Exception as exc:
+            flash(f"无法保存时间线分组：{exc}", "error")
+    return render_template("admin/timeline_edit.html", timeline=timeline, photos=photos, is_new=False)
+
+
+@app.route("/admin/timelines/<int:timeline_id>/delete", methods=["POST"])
+@login_required
+def admin_timeline_delete(timeline_id):
+    delete_timeline(timeline_id)
+    flash("时间线分组已删除，照片仍保留在原作品集里。", "success")
+    return redirect(url_for("admin_timelines"))
+
+
 @app.route("/admin/collections/new", methods=["GET", "POST"])
 @login_required
 def admin_collection_new():
@@ -374,6 +458,7 @@ def admin_collection_edit(collection_id):
         "admin/collection_edit.html",
         collection=collection,
         photos=photo_list(collection_id=collection_id),
+        timelines=timeline_list(),
         is_new=False,
     )
 
@@ -408,6 +493,7 @@ def admin_collection_photos(collection_id):
         updates[photo_id] = {
             "title": request.form.get(f"title_{photo_id}", ""),
             "description": request.form.get(f"description_{photo_id}", ""),
+            "timeline_id": request.form.get(f"timeline_id_{photo_id}", ""),
             "sort_order": request.form.get(f"sort_order_{photo_id}", "0"),
             "featured_order": request.form.get(f"featured_order_{photo_id}", "0"),
             "is_featured": request.form.get(f"is_featured_{photo_id}"),
@@ -460,6 +546,7 @@ def admin_home_slideshow():
 @login_required
 def admin_photo_upload():
     collections = collection_list()
+    timelines = timeline_list()
     preselected_collection_id = request.args.get("collection_id", "")
     if request.method == "POST":
         file_storages = [file for file in request.files.getlist("images") if file and file.filename]
@@ -491,7 +578,12 @@ def admin_photo_upload():
             return redirect(url_for("admin_collection_edit", collection_id=collection_id))
         except Exception as exc:
             flash(f"无法上传照片：{exc}", "error")
-    return render_template("admin/photo_upload.html", collections=collections, preselected_collection_id=preselected_collection_id)
+    return render_template(
+        "admin/photo_upload.html",
+        collections=collections,
+        timelines=timelines,
+        preselected_collection_id=preselected_collection_id,
+    )
 
 
 @app.route("/admin/photos/<int:photo_id>/edit", methods=["GET", "POST"])
@@ -506,7 +598,7 @@ def admin_photo_edit(photo_id):
         save_photo(data, photo_id=photo_id)
         flash("照片已更新。", "success")
         return redirect(url_for("admin_photos"))
-    return render_template("admin/photo_edit.html", photo=photo, collections=collection_list())
+    return render_template("admin/photo_edit.html", photo=photo, collections=collection_list(), timelines=timeline_list())
 
 
 @app.route("/admin/photos/<int:photo_id>/delete", methods=["POST"])

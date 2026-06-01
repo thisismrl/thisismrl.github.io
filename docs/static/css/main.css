@@ -258,19 +258,33 @@ figcaption {
 
 .works-browser {
   display: block;
-  width: min(850px, 100%);
+  width: min(780px, calc(100vw - 600px));
   max-width: none;
-  margin-left: clamp(78px, 9vw, 150px);
+  margin-left: clamp(190px, 19vw, 250px);
 }
 
+.works-mode-menu,
 .works-menu,
 .texts-menu {
   position: fixed;
   top: 133px;
-  left: 180px;
   z-index: 12;
-  width: 136px;
   padding-top: 0;
+}
+
+.works-mode-menu {
+  left: 180px;
+  width: 86px;
+}
+
+.works-menu {
+  left: 292px;
+  width: 154px;
+}
+
+.texts-menu {
+  left: 180px;
+  width: 136px;
 }
 
 .works-menu h1 {
@@ -281,17 +295,31 @@ figcaption {
   color: #222;
 }
 
+.works-mode-menu nav,
 .works-menu nav,
 .texts-menu nav {
   display: grid;
   gap: 12px;
 }
 
+.works-list {
+  display: none !important;
+}
+
+.works-list.is-active {
+  display: grid !important;
+}
+
+.works-mode-switch,
 .works-switch,
 .texts-switch {
   display: grid;
   gap: 1px;
   color: var(--subtle);
+}
+
+.works-mode-switch {
+  color: #6f6967;
 }
 
 .works-switch span:first-child,
@@ -303,6 +331,8 @@ figcaption {
   font-size: 12px;
 }
 
+.works-mode-switch.is-active,
+.works-mode-switch:hover,
 .works-switch.is-active,
 .works-switch:hover,
 .texts-switch.is-active,
@@ -310,6 +340,7 @@ figcaption {
   color: var(--muted);
 }
 
+.works-mode-switch.is-active,
 .works-switch.is-active span:first-child,
 .texts-switch.is-active {
   color: #222;
@@ -378,12 +409,12 @@ figcaption {
 }
 
 .with-fixed-subnav {
-  width: min(860px, 100%);
+  width: min(780px, calc(100vw - 600px));
 }
 
 .work-scroll {
-  width: min(860px, 100%);
-  margin-left: clamp(78px, 9vw, 150px);
+  width: min(780px, calc(100vw - 600px));
+  margin-left: clamp(190px, 19vw, 250px);
 }
 
 .detail-header {
@@ -778,11 +809,17 @@ figcaption {
     margin-left: 0;
   }
 
+  .works-mode-menu,
   .works-menu,
   .texts-menu {
     position: static;
     width: auto;
-    margin-bottom: 44px;
+    margin-bottom: 24px;
+  }
+
+  .works-mode-menu nav {
+    display: flex;
+    gap: 16px;
   }
 
   .works-menu nav,

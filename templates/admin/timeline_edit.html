@@ -1,0 +1,59 @@
+{% extends "admin/base.html" %}
+{% block title %}{% if is_new %}新建时间线{% else %}编辑时间线{% endif %}{% endblock %}
+
+{% block content %}
+<section class="admin-title">
+  <h1>{% if is_new %}新建时间线{% else %}编辑时间线{% endif %}</h1>
+  <p>时间线分组用于按年份、城市或旅行阶段整理照片。</p>
+</section>
+
+<form class="edit-form" method="post">
+  <div class="form-grid">
+    <label>标题<input name="title" value="{{ timeline.title or '' }}" placeholder="东京 2025" required></label>
+    <label>Slug<input name="slug" value="{{ timeline.slug or '' }}" placeholder="tokyo-2025"></label>
+    <label>年份<input name="year" value="{{ timeline.year or '' }}" placeholder="2025"></label>
+    <label>地点<input name="location" value="{{ timeline.location or '' }}" placeholder="Tokyo"></label>
+    <label>排序<input type="number" name="sort_order" value="{{ timeline.sort_order or 0 }}"></label>
+  </div>
+  <label>简介<textarea name="description" rows="5">{{ timeline.description or '' }}</textarea></label>
+  {% if photos %}
+    <label>封面照片
+      <select name="cover_photo_id">
+        <option value="">无</option>
+        {% for photo in photos %}
+          <option value="{{ photo.id }}" {% if timeline.cover_photo_id == photo.id %}selected{% endif %}>{{ photo.title or photo.filename }}</option>
+        {% endfor %}
+      </select>
+    </label>
+  {% else %}
+    <input type="hidden" name="cover_photo_id" value="">
+  {% endif %}
+  <div class="form-actions">
+    <button type="submit">保存</button>
+    <a href="/admin/timelines">取消</a>
+  </div>
+</form>
+
+{% if not is_new %}
+  <section class="admin-subsection">
+    <div class="admin-title">
+      <h1>照片</h1>
+      <p>这里显示已经归入此时间线分组的照片。照片本身仍在各自作品集里管理。</p>
+    </div>
+    <div class="photo-admin-grid">
+      {% for photo in photos %}
+        <a class="photo-admin-item" href="/admin/photos/{{ photo.id }}/edit">
+          {% if photo.display_filename %}<img src="/uploads/display/{{ photo.display_filename }}" alt="{{ photo.title or photo.filename }}">{% endif %}
+          <span>
+            <strong>{{ photo.title or photo.filename }}</strong><br>
+            {{ photo.collection_title }}{% if photo.shot_date %} / {{ photo.shot_date }}{% endif %}
+          </span>
+          <span>编辑</span>
+        </a>
+      {% else %}
+        <p class="empty">还没有照片归入这个时间线分组。</p>
+      {% endfor %}
+    </div>
+  </section>
+{% endif %}
+{% endblock %}
