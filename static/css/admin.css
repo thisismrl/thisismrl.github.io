@@ -291,6 +291,19 @@ label {
   gap: 18px;
 }
 
+.cover-upload {
+  display: grid;
+  gap: 10px;
+}
+
+.article-cover-preview {
+  width: min(280px, 100%);
+  max-height: 220px;
+  object-fit: cover;
+  border: 1px solid var(--line);
+  background: #eee;
+}
+
 .compact-grid {
   gap: 10px;
 }
@@ -428,6 +441,24 @@ label {
   padding: 18px;
   font-family: Georgia, "Times New Roman", serif;
   line-height: 1.9;
+}
+
+.markdown-help {
+  border: 1px solid var(--line);
+  background: #fff;
+  padding: 12px 14px;
+}
+
+.markdown-help summary {
+  cursor: pointer;
+  color: var(--muted);
+}
+
+.markdown-help pre {
+  margin: 14px 0 0;
+  overflow: auto;
+  white-space: pre-wrap;
+  font: 14px/1.7 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
 
 .export-box {

@@ -104,6 +104,22 @@ def normalize_article_data(form):
     return data
 
 
+def apply_article_cover_upload(data, files):
+    if data.get("category") == "Notes":
+        data["cover_image"] = ""
+        return data
+
+    if data.get("clear_cover"):
+        data["cover_image"] = ""
+
+    cover_file = files.get("cover_upload")
+    if cover_file and cover_file.filename:
+        image_data = save_uploaded_image(cover_file)
+        data["cover_image"] = f"/uploads/covers/{image_data['cover_filename']}"
+
+    return data
+
+
 def login_required(view):
     def wrapped(*args, **kwargs):
         if not session.get("admin_logged_in"):
@@ -516,6 +532,7 @@ def admin_article_new():
     if request.method == "POST":
         data = normalize_article_data(request.form)
         try:
+            data = apply_article_cover_upload(data, request.files)
             save_article(data, render_markdown(data.get("content_markdown", "")))
             flash("文字已创建。", "success")
             return redirect(url_for("admin_articles"))
@@ -533,6 +550,7 @@ def admin_article_edit(article_id):
     if request.method == "POST":
         data = normalize_article_data(request.form)
         try:
+            data = apply_article_cover_upload(data, request.files)
             save_article(data, render_markdown(data.get("content_markdown", "")), article_id=article_id)
             flash("文字已更新。", "success")
             return redirect(url_for("admin_articles"))

@@ -6,7 +6,7 @@
   <h1>{% if is_new %}新建文字{% else %}编辑文字{% endif %}</h1>
 </section>
 
-<form class="edit-form" method="post" data-article-form>
+<form class="edit-form" method="post" enctype="multipart/form-data" data-article-form>
   <div class="form-grid">
     <label>标题<input name="title" value="{{ article.title or '' }}" data-article-title></label>
     <label>Slug<input name="slug" value="{{ article.slug or '' }}"></label>
@@ -25,7 +25,17 @@
       </select>
     </label>
     <label>发布时间<input name="published_at" value="{{ article.published_at or '' }}" placeholder="YYYY-MM-DD"></label>
-    <label data-cover-field>封面图片路径<input name="cover_image" value="{{ article.cover_image or '' }}" placeholder="/uploads/display/example.webp"></label>
+    <div class="cover-upload" data-cover-field>
+      <input type="hidden" name="cover_image" value="{{ article.cover_image or '' }}">
+      <label>封面图片
+        <input type="file" name="cover_upload" accept="image/*">
+      </label>
+      {% if article.cover_image %}
+        <img class="article-cover-preview" src="{{ article.cover_image }}" alt="当前封面">
+        <label class="checkbox"><input type="checkbox" name="clear_cover" value="1"> 删除当前封面</label>
+      {% endif %}
+      <p class="form-note">Essay / Fiction 可上传封面；Notes 会自动忽略封面。</p>
+    </div>
   </div>
   <div class="type-guides">
     <p data-guide="Essay"><strong>Essay</strong>：散文或随笔。封面和摘要会用于文字页与动态页；摘要为空时会从正文自动生成。</p>
@@ -42,6 +52,23 @@
       <div id="markdown-preview" class="markdown-preview"></div>
     </div>
   </div>
+  <details class="markdown-help">
+    <summary>Markdown 简表</summary>
+    <pre># 一级标题
+## 二级标题
+
+段落之间空一行。
+
+**加粗文字**
+*斜体文字*
+
+> 引用
+
+- 列表项
+- 列表项
+
+[链接文字](https://example.com)</pre>
+  </details>
   <div class="form-actions">
     <button type="submit">保存</button>
     <a href="/admin/articles">取消</a>
