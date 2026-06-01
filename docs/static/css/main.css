@@ -134,10 +134,10 @@ main {
 
 .home-cover {
   position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 330px;
+  top: 38px;
+  right: 44px;
+  bottom: 38px;
+  left: 392px;
   overflow: hidden;
 }
 
@@ -741,7 +741,9 @@ figcaption {
     right: auto;
     top: auto;
     bottom: auto;
+    width: calc(100vw - 44px);
     height: 70vh;
+    margin: 0 22px 34px;
   }
 
   .work-entry,
