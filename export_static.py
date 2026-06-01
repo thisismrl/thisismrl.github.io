@@ -45,7 +45,7 @@ def export_site(flask_app=None):
         ("/contact/", DOCS_DIR / "contact" / "index.html"),
     ]
 
-    for collection in collection_list():
+    for collection in collection_list(show_in_series=True):
         routes.append((
             f"/works/{collection['slug']}/",
             DOCS_DIR / "works" / collection["slug"] / "index.html",

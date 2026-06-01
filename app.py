@@ -226,7 +226,7 @@ def news():
 
 @app.route("/works/")
 def works():
-    return render_template("works.html", collections=collection_list(), timelines=timeline_list())
+    return render_template("works.html", collections=collection_list(show_in_series=True), timelines=timeline_list())
 
 
 @app.route("/works/<slug>/")
@@ -234,12 +234,21 @@ def work_detail(slug):
     collection = get_collection_by_slug(slug)
     if not collection:
         abort(404)
+    if not collection.get("show_in_series"):
+        timeline = None
+        for photo in photo_list(collection_id=collection["id"]):
+            if photo.get("timeline_id"):
+                timeline = get_timeline(photo["timeline_id"])
+                break
+        if timeline:
+            return redirect(url_for("timeline_detail", slug=timeline["slug"]))
+        abort(404)
     photos = photo_list(collection_id=collection["id"])
     return render_template(
         "work_detail.html",
         collection=collection,
         photos=photos,
-        collections=collection_list(),
+        collections=collection_list(show_in_series=True),
         timelines=timeline_list(),
         active_mode="series",
     )
@@ -255,7 +264,7 @@ def timeline_detail(slug):
         "timeline_detail.html",
         timeline=timeline,
         photos=photos,
-        collections=collection_list(),
+        collections=collection_list(show_in_series=True),
         timelines=timeline_list(),
         active_mode="timeline",
     )
@@ -428,6 +437,7 @@ def admin_collection_new():
         if not data.get("slug"):
             data["slug"] = slugify(data.get("title", ""))
         data["is_featured"] = request.form.get("is_featured")
+        data["show_in_series"] = request.form.get("show_in_series")
         try:
             save_collection(data)
             flash("作品集已创建。", "success")
@@ -448,6 +458,7 @@ def admin_collection_edit(collection_id):
         if not data.get("slug"):
             data["slug"] = slugify(data.get("title", ""))
         data["is_featured"] = request.form.get("is_featured")
+        data["show_in_series"] = request.form.get("show_in_series")
         try:
             save_collection(data, collection_id=collection_id)
             flash("作品集已更新。", "success")

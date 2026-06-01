@@ -15,6 +15,7 @@ SCHEMA = {
         "location": "TEXT",
         "cover_photo_id": "INTEGER",
         "is_featured": "INTEGER DEFAULT 0",
+        "show_in_series": "INTEGER DEFAULT 1",
         "sort_order": "INTEGER DEFAULT 0",
         "created_at": "TEXT",
         "updated_at": "TEXT",

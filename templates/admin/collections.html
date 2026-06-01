@@ -19,6 +19,7 @@
       </div>
       <div class="row-actions">
         {% if collection.is_featured %}<span class="pill">首页精选</span>{% endif %}
+        {% if not collection.show_in_series %}<span class="pill">仅作为照片容器</span>{% endif %}
         <a href="/admin/collections/{{ collection.id }}/edit">编辑</a>
         <form method="post" action="/admin/collections/{{ collection.id }}/delete" data-confirm="Delete this collection and its photos?">
           <button type="submit">删除</button>

@@ -42,16 +42,22 @@ def all_settings():
     return settings
 
 
-def collection_list(featured=None):
+def collection_list(featured=None, show_in_series=None):
     sql = (
         "SELECT c.*, p.cover_filename, p.display_filename "
         "FROM collections c "
         "LEFT JOIN photos p ON p.id = c.cover_photo_id "
     )
     params = []
+    clauses = []
     if featured is not None:
-        sql += "WHERE c.is_featured = ? "
+        clauses.append("c.is_featured = ?")
         params.append(1 if featured else 0)
+    if show_in_series is not None:
+        clauses.append("c.show_in_series = ?")
+        params.append(1 if show_in_series else 0)
+    if clauses:
+        sql += "WHERE " + " AND ".join(clauses) + " "
     sql += "ORDER BY c.sort_order ASC, c.year DESC, c.created_at DESC"
     with get_db() as conn:
         return rows_to_dicts(conn.execute(sql, params).fetchall())
@@ -99,6 +105,7 @@ def save_collection(data, collection_id=None):
         "location": data.get("location", "").strip(),
         "cover_photo_id": data.get("cover_photo_id") or None,
         "is_featured": 1 if data.get("is_featured") else 0,
+        "show_in_series": 1 if data.get("show_in_series") else 0,
         "sort_order": int(data.get("sort_order") or 0),
         "updated_at": timestamp,
     }

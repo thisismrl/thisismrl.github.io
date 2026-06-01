@@ -6,7 +6,7 @@
   <header class="text-header">
     <h1>关于</h1>
   </header>
-  <div class="prose">
+  <div class="prose about-prose">
     {% if site_settings.about_text %}
       {{ site_settings.about_text|replace('\n', '<br>')|safe }}
     {% else %}

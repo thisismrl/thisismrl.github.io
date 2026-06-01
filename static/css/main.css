@@ -701,6 +701,13 @@ figcaption {
   color: #555;
 }
 
+.about-prose {
+  font-family: inherit;
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 2.05;
+}
+
 .archive-list {
   width: min(700px, 100%);
 }
