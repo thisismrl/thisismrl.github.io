@@ -5,3 +5,4 @@ uploads/originals/
 __pycache__/
 .DS_Store
 deploy_to_github.command
+一键更新官网.command
