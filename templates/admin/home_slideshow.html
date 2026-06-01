@@ -1,0 +1,41 @@
+{% extends "admin/base.html" %}
+{% block title %}首页轮播{% endblock %}
+
+{% block content %}
+<section class="admin-title">
+  <h1>首页轮播</h1>
+  <p>选择哪些照片显示在首页大图轮播中，并调整它们的播放顺序。</p>
+</section>
+
+<form class="edit-form" method="post">
+  <div class="slideshow-admin-grid">
+    {% for photo in photos %}
+      <label class="slideshow-item">
+        <span class="slideshow-image">
+          {% if photo.display_filename %}
+            <img src="/uploads/display/{{ photo.display_filename }}" alt="{{ photo.title or photo.filename }}">
+          {% endif %}
+        </span>
+        <span class="slideshow-fields">
+          <span class="checkbox">
+            <input type="checkbox" name="selected_photo" value="{{ photo.id }}" {% if photo.is_featured %}checked{% endif %}>
+            加入首页轮播
+          </span>
+          <span>{{ photo.title or photo.filename }}</span>
+          <small>{{ photo.collection_title }}{% if photo.shot_date %} / {{ photo.shot_date }}{% endif %}</small>
+          <span>轮播顺序
+            <input type="number" name="featured_order_{{ photo.id }}" value="{{ photo.featured_order or photo.sort_order or 0 }}">
+          </span>
+        </span>
+      </label>
+    {% else %}
+      <p class="empty">还没有照片。请先上传照片。</p>
+    {% endfor %}
+  </div>
+
+  <div class="form-actions">
+    <button type="submit">保存首页轮播</button>
+    <a href="/admin/photos">返回照片</a>
+  </div>
+</form>
+{% endblock %}

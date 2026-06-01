@@ -42,6 +42,7 @@ from models import (
     photo_list,
     save_article,
     save_collection,
+    save_home_slideshow,
     save_photo,
     set_setting,
 )
@@ -373,6 +374,22 @@ def admin_collection_delete(collection_id):
 @login_required
 def admin_photos():
     return render_template("admin/photos.html", photos=photo_list())
+
+
+@app.route("/admin/home-slideshow", methods=["GET", "POST"])
+@login_required
+def admin_home_slideshow():
+    if request.method == "POST":
+        selected_ids = request.form.getlist("selected_photo")
+        order_map = {
+            key.replace("featured_order_", ""): value
+            for key, value in request.form.items()
+            if key.startswith("featured_order_")
+        }
+        save_home_slideshow(selected_ids, order_map)
+        flash("首页轮播已更新。", "success")
+        return redirect(url_for("admin_home_slideshow"))
+    return render_template("admin/home_slideshow.html", photos=photo_list())
 
 
 @app.route("/admin/photos/upload", methods=["GET", "POST"])

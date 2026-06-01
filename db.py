@@ -31,6 +31,7 @@ SCHEMA = {
         "location": "TEXT",
         "sort_order": "INTEGER DEFAULT 0",
         "is_featured": "INTEGER DEFAULT 0",
+        "featured_order": "INTEGER DEFAULT 0",
         "created_at": "TEXT",
         "updated_at": "TEXT",
     },

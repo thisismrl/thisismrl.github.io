@@ -121,7 +121,10 @@ def photo_list(collection_id=None, featured=None):
         params.append(1 if featured else 0)
     if clauses:
         sql += "WHERE " + " AND ".join(clauses) + " "
-    sql += "ORDER BY p.sort_order ASC, p.shot_date DESC, p.created_at DESC"
+    if featured is not None:
+        sql += "ORDER BY p.featured_order ASC, p.sort_order ASC, p.shot_date DESC, p.created_at DESC"
+    else:
+        sql += "ORDER BY p.sort_order ASC, p.shot_date DESC, p.created_at DESC"
     with get_db() as conn:
         return rows_to_dicts(conn.execute(sql, params).fetchall())
 
@@ -141,6 +144,7 @@ def save_photo(data, filenames=None, photo_id=None):
         "location": data.get("location", "").strip(),
         "sort_order": int(data.get("sort_order") or 0),
         "is_featured": 1 if data.get("is_featured") else 0,
+        "featured_order": int(data.get("featured_order") or 0),
         "updated_at": timestamp,
     }
     if filenames:
@@ -167,6 +171,18 @@ def max_photo_sort_order(collection_id):
             (collection_id,),
         ).fetchone()
         return row["n"] if row else 0
+
+
+def save_home_slideshow(selected_ids, order_map):
+    selected_ids = {int(photo_id) for photo_id in selected_ids if str(photo_id).strip()}
+    with get_db() as conn:
+        conn.execute("UPDATE photos SET is_featured = 0, featured_order = 0")
+        for photo_id in selected_ids:
+            conn.execute(
+                "UPDATE photos SET is_featured = 1, featured_order = ? WHERE id = ?",
+                (int(order_map.get(str(photo_id)) or 0), photo_id),
+            )
+        conn.commit()
 
 
 def delete_photo(photo_id):
