@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>后台登录</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body class="login-screen">
+  <form class="login-box" method="post">
+    <h1>本地后台</h1>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}
+        <p class="message {{ category }}">{{ message }}</p>
+      {% endfor %}
+    {% endwith %}
+    <label>
+      密码
+      <input type="password" name="password" required autofocus>
+    </label>
+    <button type="submit">登录</button>
+    <p class="hint">后台密码保存在 instance/admin_password.txt。</p>
+  </form>
+</body>
+</html>

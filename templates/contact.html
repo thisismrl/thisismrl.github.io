@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}联系 / {{ site_settings.site_name }}{% endblock %}
+
+{% block content %}
+<section class="page-intro">
+  <h1>联系</h1>
+  <p>邮件、社交链接与其他联系方式。</p>
+</section>
+
+<section class="contact-list">
+  {% if site_settings.contact_email %}<a href="mailto:{{ site_settings.contact_email }}">{{ site_settings.contact_email }}</a>{% endif %}
+  {% if site_settings.instagram %}<a href="{{ site_settings.instagram }}">Instagram</a>{% endif %}
+  {% if site_settings.xiaohongshu %}<a href="{{ site_settings.xiaohongshu }}">小红书</a>{% endif %}
+  {% if site_settings.github %}<a href="{{ site_settings.github }}">GitHub</a>{% endif %}
+  {% if not site_settings.contact_email and not site_settings.instagram and not site_settings.xiaohongshu and not site_settings.github %}
+    <p class="empty-note">联系方式可以在本地后台设置中添加。</p>
+  {% endif %}
+</section>
+{% endblock %}

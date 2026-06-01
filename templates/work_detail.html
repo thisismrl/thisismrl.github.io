@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}{{ collection.title }} / Works / {{ site_settings.site_name }}{% endblock %}
+
+{% block content %}
+<article class="work-detail with-fixed-subnav">
+  <aside class="works-menu detail-subnav">
+    <nav aria-label="Work series">
+      {% for item in collections %}
+        <a class="works-switch{% if item.id == collection.id %} is-active{% endif %}" href="/works/{{ item.slug }}/">
+          <span>{{ item.title }}</span>
+          <span>{{ item.year or 'Undated' }}</span>
+        </a>
+      {% endfor %}
+    </nav>
+  </aside>
+
+  <section class="work-scroll">
+    <header class="detail-header">
+      <h1>{{ collection.title }}</h1>
+      {% if collection.subtitle %}<p class="subtitle">{{ collection.subtitle }}</p>{% endif %}
+      <p class="muted">{{ collection.year or 'Undated' }}{% if collection.location %}<br>{{ collection.location }}{% endif %}</p>
+      {% if collection.description %}<p>{{ collection.description }}</p>{% endif %}
+    </header>
+
+    <div class="photo-sequence">
+      {% for photo in photos %}
+        <figure>
+          <img src="/uploads/display/{{ photo.display_filename }}" alt="{{ photo.title or collection.title }}">
+          {% if photo.title or photo.description %}
+            <figcaption>
+              {% if photo.title %}<span>{{ photo.title }}</span>{% endif %}
+              {% if photo.description %}<span>{{ photo.description }}</span>{% endif %}
+            </figcaption>
+          {% endif %}
+        </figure>
+      {% else %}
+        <p class="empty-note">No photos in this series yet.</p>
+      {% endfor %}
+    </div>
+  </section>
+</article>
+{% endblock %}

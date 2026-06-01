@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}时间线 / {{ site_settings.site_name }}{% endblock %}
+
+{% block content %}
+<section class="page-intro">
+  <h1>时间线</h1>
+  <p>按时间整理作品与文字。</p>
+</section>
+
+<section class="archive-list">
+  {% for year, items in grouped.items() %}
+    <div class="archive-year">
+      <h2>{{ year }}</h2>
+      <div>
+        {% for item in items %}
+          <a class="archive-row" href="{{ item.url }}">
+            <span>{{ item.title }}</span>
+            <span>{% if item.kind == "Essay" %}散文{% elif item.kind == "Fiction" %}小说{% elif item.kind == "Notes" %}随笔{% elif item.kind == "Work" %}作品{% else %}{{ item.kind }}{% endif %}{% if item.meta %} / {{ item.meta }}{% endif %}</span>
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+  {% else %}
+    <p class="empty-note">时间线暂时为空。</p>
+  {% endfor %}
+</section>
+{% endblock %}

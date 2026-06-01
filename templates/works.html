@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}Works / {{ site_settings.site_name }}{% endblock %}
+
+{% block content %}
+{% set first = collections[0] if collections else none %}
+
+<section class="works-browser" data-works-browser>
+  <div class="works-menu">
+    <nav aria-label="Work series">
+      {% for collection in collections %}
+        {% set image_path = '' %}
+        {% if collection.cover_filename %}
+          {% set image_path = '/uploads/covers/' ~ collection.cover_filename %}
+        {% elif collection.display_filename %}
+          {% set image_path = '/uploads/display/' ~ collection.display_filename %}
+        {% endif %}
+        <a
+          class="works-switch{% if loop.first %} is-active{% endif %}"
+          href="/works/{{ collection.slug }}/"
+          data-title="{{ collection.title }}"
+          data-year="{{ collection.year or 'Undated' }}"
+          data-location="{{ collection.location or '' }}"
+          data-description="{{ collection.description or '' }}"
+          data-image="{{ image_path }}"
+          data-url="/works/{{ collection.slug }}/"
+        >
+          <span>{{ collection.title }}</span>
+          <span>{{ collection.year or 'Undated' }}</span>
+        </a>
+      {% else %}
+        <p class="empty-note">No works yet.</p>
+      {% endfor %}
+    </nav>
+  </div>
+
+  {% if first %}
+    {% set first_image = '' %}
+    {% if first.cover_filename %}
+      {% set first_image = '/uploads/covers/' ~ first.cover_filename %}
+    {% elif first.display_filename %}
+      {% set first_image = '/uploads/display/' ~ first.display_filename %}
+    {% endif %}
+    <div class="works-preview">
+      <a class="works-preview-image" href="/works/{{ first.slug }}/" data-preview-link>
+        {% if first_image %}
+          <img src="{{ first_image }}" alt="{{ first.title }}" data-preview-image>
+        {% else %}
+          <span class="quiet-placeholder" data-preview-placeholder>No image selected yet.</span>
+        {% endif %}
+      </a>
+      <div class="works-preview-caption">
+        <div>
+          <h2 data-preview-title>{{ first.title }}</h2>
+          <p data-preview-meta>{{ first.year or 'Undated' }}{% if first.location %} / {{ first.location }}{% endif %}</p>
+          {% if first.description %}<p data-preview-description>{{ first.description }}</p>{% else %}<p data-preview-description></p>{% endif %}
+        </div>
+        <a href="/works/{{ first.slug }}/" data-preview-open>Open series</a>
+      </div>
+    </div>
+  {% endif %}
+</section>
+{% endblock %}

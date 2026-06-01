@@ -1,0 +1,32 @@
+{% extends "admin/base.html" %}
+{% block title %}作品集{% endblock %}
+
+{% block content %}
+<section class="admin-title with-action">
+  <div>
+    <h1>作品集</h1>
+    <p>按系列管理摄影作品，并决定前台作品页的顺序。</p>
+  </div>
+  <a class="button" href="/admin/collections/new">新建作品集</a>
+</section>
+
+<div class="table-like">
+  {% for collection in collections %}
+    <div class="table-row">
+      <div>
+        <strong>{{ collection.title }}</strong>
+        <span>{{ collection.slug }} / {{ collection.year }}{% if collection.location %} / {{ collection.location }}{% endif %}</span>
+      </div>
+      <div class="row-actions">
+        {% if collection.is_featured %}<span class="pill">首页精选</span>{% endif %}
+        <a href="/admin/collections/{{ collection.id }}/edit">编辑</a>
+        <form method="post" action="/admin/collections/{{ collection.id }}/delete" data-confirm="Delete this collection and its photos?">
+          <button type="submit">删除</button>
+        </form>
+      </div>
+    </div>
+  {% else %}
+    <p class="empty">还没有作品集。</p>
+  {% endfor %}
+</div>
+{% endblock %}

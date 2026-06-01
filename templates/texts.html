@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Texts / {{ site_settings.site_name }}{% endblock %}
+
+{% block content %}
+<section class="texts-browser" data-texts-browser>
+  <aside class="texts-menu">
+    <nav aria-label="Text categories">
+      {% for category in categories %}
+        <a
+          class="texts-switch{% if category == active_category %} is-active{% endif %}"
+          href="/texts/{{ category|lower }}/"
+          data-category="{{ category }}"
+        >{% if category == "Essay" %}散文{% elif category == "Fiction" %}小说{% else %}随笔{% endif %}</a>
+      {% endfor %}
+    </nav>
+  </aside>
+
+  <div class="texts-panels">
+    {% for category in categories %}
+      <section class="texts-panel{% if category == active_category %} is-active{% endif %}" data-category-panel="{{ category }}">
+        {% if category == "Notes" %}
+          <div class="notes-stream">
+            {% for article in grouped[category] %}
+              <a class="note-line" href="/texts/{{ article.slug }}/">
+                <time>{{ (article.published_at or '')[:10] }}</time>
+                <span>{{ article.summary or article.title }}</span>
+              </a>
+            {% else %}
+              <p class="empty-note">No notes published yet.</p>
+            {% endfor %}
+          </div>
+        {% else %}
+          <div class="article-cards">
+            {% for article in grouped[category] %}
+              <a class="article-card" href="/texts/{{ article.slug }}/">
+                <span class="article-cover">
+                  {% if article.cover_image %}
+                    <img src="{{ article.cover_image }}" alt="{{ article.title }}">
+                  {% endif %}
+                </span>
+                <span class="article-kind">{% if article.category == "Essay" %}散文{% elif article.category == "Fiction" %}小说{% else %}随笔{% endif %}</span>
+                <span class="article-title">{{ article.title }}</span>
+                {% if article.summary %}<span class="article-summary">{{ article.summary }}</span>{% endif %}
+                {% if article.published_at %}<span class="article-date">{{ article.published_at[:10] }}</span>{% endif %}
+              </a>
+            {% else %}
+              <p class="empty-note">No {{ category|lower }} published yet.</p>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </section>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

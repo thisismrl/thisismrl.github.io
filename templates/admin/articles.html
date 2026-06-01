@@ -1,0 +1,32 @@
+{% extends "admin/base.html" %}
+{% block title %}文字{% endblock %}
+
+{% block content %}
+<section class="admin-title with-action">
+  <div>
+    <h1>文字</h1>
+    <p>管理 Essay、Fiction 和 Notes 三类写作内容。</p>
+  </div>
+  <a class="button" href="/admin/articles/new">新建文字</a>
+</section>
+
+<div class="table-like">
+  {% for article in articles %}
+    <div class="table-row">
+      <div>
+        <strong>{{ article.title }}</strong>
+        <span>{{ article.category }} / {{ article.slug }} / {{ article.published_at }}</span>
+      </div>
+      <div class="row-actions">
+        <span class="pill">{{ article.status }}</span>
+        <a href="/admin/articles/{{ article.id }}/edit">编辑</a>
+        <form method="post" action="/admin/articles/{{ article.id }}/delete" data-confirm="Delete this text?">
+          <button type="submit">删除</button>
+        </form>
+      </div>
+    </div>
+  {% else %}
+    <p class="empty">还没有文字。</p>
+  {% endfor %}
+</div>
+{% endblock %}

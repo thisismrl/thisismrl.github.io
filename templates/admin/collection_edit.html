@@ -1,0 +1,37 @@
+{% extends "admin/base.html" %}
+{% block title %}{% if is_new %}新建作品集{% else %}编辑作品集{% endif %}{% endblock %}
+
+{% block content %}
+<section class="admin-title">
+  <h1>{% if is_new %}新建作品集{% else %}编辑作品集{% endif %}</h1>
+</section>
+
+<form class="edit-form" method="post">
+  <div class="form-grid">
+    <label>标题<input name="title" value="{{ collection.title or '' }}" required></label>
+    <label>Slug<input name="slug" value="{{ collection.slug or '' }}" placeholder="series-slug"></label>
+    <label>副标题<input name="subtitle" value="{{ collection.subtitle or '' }}"></label>
+    <label>年份<input name="year" value="{{ collection.year or '' }}"></label>
+    <label>地点<input name="location" value="{{ collection.location or '' }}"></label>
+    <label>排序<input type="number" name="sort_order" value="{{ collection.sort_order or 0 }}"></label>
+  </div>
+  <label>简介<textarea name="description" rows="5">{{ collection.description or '' }}</textarea></label>
+  {% if photos %}
+    <label>封面照片
+      <select name="cover_photo_id">
+        <option value="">无</option>
+        {% for photo in photos %}
+          <option value="{{ photo.id }}" {% if collection.cover_photo_id == photo.id %}selected{% endif %}>{{ photo.title or photo.filename }}</option>
+        {% endfor %}
+      </select>
+    </label>
+  {% else %}
+    <input type="hidden" name="cover_photo_id" value="">
+  {% endif %}
+  <label class="checkbox"><input type="checkbox" name="is_featured" value="1" {% if collection.is_featured %}checked{% endif %}> 首页精选</label>
+  <div class="form-actions">
+    <button type="submit">保存</button>
+    <a href="/admin/collections">取消</a>
+  </div>
+</form>
+{% endblock %}

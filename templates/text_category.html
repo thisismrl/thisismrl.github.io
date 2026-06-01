@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}{{ category }} / Texts / {{ site_settings.site_name }}{% endblock %}
+
+{% block content %}
+<section class="page-intro">
+  <a class="back-link" href="/texts/">Texts</a>
+  <h1>{{ category }}</h1>
+</section>
+
+<section class="texts-index category-page">
+  <div class="text-list">
+    {% for article in articles %}
+      <a class="text-row" href="/texts/{{ article.slug }}/">
+        <span>{{ article.title }}</span>
+        <span>{{ (article.published_at or '')[:10] }}</span>
+        {% if article.summary %}<p>{{ article.summary }}</p>{% endif %}
+      </a>
+    {% else %}
+      <p class="empty-note">No {{ category|lower }} published yet.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

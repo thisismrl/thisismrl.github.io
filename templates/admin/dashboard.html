@@ -1,0 +1,48 @@
+{% extends "admin/base.html" %}
+{% block title %}概览{% endblock %}
+
+{% block content %}
+<section class="admin-title">
+  <h1>概览</h1>
+  <p>用于管理摄影作品、文字内容，并生成公网静态站。</p>
+</section>
+
+<section class="stats">
+  <div><strong>{{ counts.collections }}</strong><span>作品集</span></div>
+  <div><strong>{{ counts.photos }}</strong><span>照片</span></div>
+  <div><strong>{{ counts.published }}</strong><span>已发布文字</span></div>
+  <div><strong>{{ counts.drafts }}</strong><span>草稿</span></div>
+</section>
+
+<section class="quick-actions">
+  <a href="/admin/collections/new">新建作品集</a>
+  <a href="/admin/photos/upload">上传照片</a>
+  <a href="/admin/articles/new">新建文字</a>
+  <a href="/admin/export">生成静态站</a>
+</section>
+
+<section class="two-column">
+  <div>
+    <h2>最近作品</h2>
+    {% for collection in recent_collections %}
+      <a class="admin-row" href="/admin/collections/{{ collection.id }}/edit">
+        <span>{{ collection.title }}</span>
+        <span>{{ collection.year }}</span>
+      </a>
+    {% else %}
+      <p class="empty">还没有作品集。</p>
+    {% endfor %}
+  </div>
+  <div>
+    <h2>最近文字</h2>
+    {% for article in recent_articles %}
+      <a class="admin-row" href="/admin/articles/{{ article.id }}/edit">
+        <span>{{ article.title }}</span>
+        <span>{{ article.status }}</span>
+      </a>
+    {% else %}
+      <p class="empty">还没有文字。</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

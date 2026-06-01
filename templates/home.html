@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="home-cover" data-home-slideshow>
+  {% for photo in hero_photos %}
+    <img
+      class="home-slide{% if loop.first %} is-active{% endif %}"
+      src="/uploads/display/{{ photo.display_filename }}"
+      alt="{{ photo.title or site_settings.site_name }}"
+    >
+  {% else %}
+    <div class="quiet-placeholder home-empty">No featured image selected yet.</div>
+  {% endfor %}
+</section>
+{% endblock %}

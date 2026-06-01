@@ -1,0 +1,24 @@
+{% extends "admin/base.html" %}
+{% block title %}设置{% endblock %}
+
+{% block content %}
+<section class="admin-title">
+  <h1>设置</h1>
+  <p>管理站点名称、关于页面和联系方式。</p>
+</section>
+
+<form class="edit-form" method="post">
+  <div class="form-grid">
+    <label>站点名称<input name="site_name" value="{{ settings.site_name }}"></label>
+    <label>一句简介<input name="tagline" value="{{ settings.tagline }}"></label>
+    <label>邮箱<input name="contact_email" value="{{ settings.contact_email }}"></label>
+    <label>Instagram<input name="instagram" value="{{ settings.instagram }}"></label>
+    <label>小红书<input name="xiaohongshu" value="{{ settings.xiaohongshu }}"></label>
+    <label>GitHub<input name="github" value="{{ settings.github }}"></label>
+  </div>
+  <label>关于页面文字<textarea name="about_text" rows="12">{{ settings.about_text }}</textarea></label>
+  <div class="form-actions">
+    <button type="submit">保存设置</button>
+  </div>
+</form>
+{% endblock %}

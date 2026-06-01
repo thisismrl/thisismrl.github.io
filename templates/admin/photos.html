@@ -1,0 +1,33 @@
+{% extends "admin/base.html" %}
+{% block title %}照片{% endblock %}
+
+{% block content %}
+<section class="admin-title with-action">
+  <div>
+    <h1>照片</h1>
+    <p>原图保存在本地，公网页面只使用生成后的 WebP 展示图。</p>
+  </div>
+  <a class="button" href="/admin/photos/upload">上传照片</a>
+</section>
+
+<div class="photo-admin-grid">
+  {% for photo in photos %}
+    <div class="photo-admin-item">
+      {% if photo.display_filename %}<img src="/uploads/display/{{ photo.display_filename }}" alt="{{ photo.title or photo.filename }}">{% endif %}
+      <div>
+        <strong>{{ photo.title or photo.filename }}</strong>
+        <span>{{ photo.collection_title }}{% if photo.shot_date %} / {{ photo.shot_date }}{% endif %}</span>
+      </div>
+      <div class="row-actions">
+        {% if photo.is_featured %}<span class="pill">首页轮播</span>{% endif %}
+        <a href="/admin/photos/{{ photo.id }}/edit">编辑</a>
+        <form method="post" action="/admin/photos/{{ photo.id }}/delete" data-confirm="Delete this photo?">
+          <button type="submit">删除</button>
+        </form>
+      </div>
+    </div>
+  {% else %}
+    <p class="empty">还没有照片。</p>
+  {% endfor %}
+</div>
+{% endblock %}

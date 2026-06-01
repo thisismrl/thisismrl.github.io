@@ -1,0 +1,34 @@
+{% extends "admin/base.html" %}
+{% block title %}上传照片{% endblock %}
+
+{% block content %}
+<section class="admin-title">
+  <h1>上传照片</h1>
+</section>
+
+<form class="edit-form" method="post" enctype="multipart/form-data">
+  <label>所属作品集
+    <select name="collection_id" required>
+      <option value="">选择作品集</option>
+      {% for collection in collections %}
+        <option value="{{ collection.id }}">{{ collection.title }}</option>
+      {% endfor %}
+    </select>
+  </label>
+  <label>照片<input type="file" name="images" accept="image/*" multiple required></label>
+  <div class="form-grid">
+    <label>标题<input name="title"></label>
+    <label>拍摄日期<input name="shot_date" placeholder="YYYY-MM-DD"></label>
+    <label>地点<input name="location"></label>
+    <label>排序<input type="number" name="sort_order" value="0" disabled></label>
+  </div>
+  <label>描述<textarea name="description" rows="4"></textarea></label>
+  <p class="form-note">一次选择多张照片时，系统会自动接在该作品集现有排序后面。标题、日期、地点和描述会应用到这一批上传的照片。</p>
+  <label class="checkbox"><input type="checkbox" name="use_as_cover" value="1" checked> 将第一张设为作品集封面</label>
+  <label class="checkbox"><input type="checkbox" name="is_featured" value="1"> 将第一张加入首页轮播</label>
+  <div class="form-actions">
+    <button type="submit">上传</button>
+    <a href="/admin/photos">取消</a>
+  </div>
+</form>
+{% endblock %}

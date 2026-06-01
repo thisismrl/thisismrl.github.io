@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}{{ article.title }} / Texts / {{ site_settings.site_name }}{% endblock %}
+
+{% block content %}
+<article class="text-detail">
+  <header class="text-header">
+    <a class="back-link" href="/texts/">Texts</a>
+    <h1>{{ article.title }}</h1>
+    <p class="muted">{{ article.category }} / {{ (article.published_at or '')[:10] }}</p>
+    {% if article.cover_image %}
+      <img class="text-cover" src="{{ article.cover_image }}" alt="{{ article.title }}">
+    {% endif %}
+  </header>
+  <div class="prose">
+    {{ article.content_html|safe }}
+  </div>
+</article>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends "admin/base.html" %}
+{% block title %}编辑照片{% endblock %}
+
+{% block content %}
+<section class="admin-title">
+  <h1>编辑照片</h1>
+</section>
+
+<form class="edit-form" method="post">
+  {% if photo.display_filename %}<img class="form-preview" src="/uploads/display/{{ photo.display_filename }}" alt="{{ photo.title or photo.filename }}">{% endif %}
+  <label>所属作品集
+    <select name="collection_id" required>
+      {% for collection in collections %}
+        <option value="{{ collection.id }}" {% if photo.collection_id == collection.id %}selected{% endif %}>{{ collection.title }}</option>
+      {% endfor %}
+    </select>
+  </label>
+  <div class="form-grid">
+    <label>标题<input name="title" value="{{ photo.title or '' }}"></label>
+    <label>拍摄日期<input name="shot_date" value="{{ photo.shot_date or '' }}"></label>
+    <label>地点<input name="location" value="{{ photo.location or '' }}"></label>
+    <label>排序<input type="number" name="sort_order" value="{{ photo.sort_order or 0 }}"></label>
+  </div>
+  <label>描述<textarea name="description" rows="4">{{ photo.description or '' }}</textarea></label>
+  <label class="checkbox"><input type="checkbox" name="is_featured" value="1" {% if photo.is_featured %}checked{% endif %}> 加入首页轮播</label>
+  <div class="form-actions">
+    <button type="submit">保存</button>
+    <a href="/admin/photos">取消</a>
+  </div>
+</form>
+{% endblock %}

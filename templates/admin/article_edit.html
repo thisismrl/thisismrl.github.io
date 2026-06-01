@@ -1,0 +1,50 @@
+{% extends "admin/base.html" %}
+{% block title %}{% if is_new %}新建文字{% else %}编辑文字{% endif %}{% endblock %}
+
+{% block content %}
+<section class="admin-title">
+  <h1>{% if is_new %}新建文字{% else %}编辑文字{% endif %}</h1>
+</section>
+
+<form class="edit-form" method="post" data-article-form>
+  <div class="form-grid">
+    <label>标题<input name="title" value="{{ article.title or '' }}" data-article-title></label>
+    <label>Slug<input name="slug" value="{{ article.slug or '' }}"></label>
+    <label>分类
+      <select name="category" data-article-category>
+        {% for category in ["Essay", "Fiction", "Notes"] %}
+          <option value="{{ category }}" {% if article.category == category %}selected{% endif %}>{{ category }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <label>状态
+      <select name="status">
+        {% for status in ["draft", "published"] %}
+          <option value="{{ status }}" {% if article.status == status %}selected{% endif %}>{% if status == "draft" %}草稿{% else %}已发布{% endif %}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <label>发布时间<input name="published_at" value="{{ article.published_at or '' }}" placeholder="YYYY-MM-DD"></label>
+    <label data-cover-field>封面图片路径<input name="cover_image" value="{{ article.cover_image or '' }}" placeholder="/uploads/display/example.webp"></label>
+  </div>
+  <div class="type-guides">
+    <p data-guide="Essay"><strong>Essay</strong>：散文或随笔。封面和摘要会用于文字页与动态页；摘要为空时会从正文自动生成。</p>
+    <p data-guide="Fiction"><strong>Fiction</strong>：小说或故事。正文使用 Markdown；封面可选。</p>
+    <p data-guide="Notes"><strong>Notes</strong>：短札、日记或片段。封面会被忽略；标题或摘要为空时，系统会根据日期和正文自动生成。</p>
+  </div>
+  <label>摘要<textarea name="summary" rows="3" data-summary-field>{{ article.summary or '' }}</textarea></label>
+  <div class="editor-layout">
+    <label>Markdown
+      <textarea id="markdown-input" name="content_markdown" rows="18">{{ article.content_markdown or '' }}</textarea>
+    </label>
+    <div>
+      <span class="preview-label">预览</span>
+      <div id="markdown-preview" class="markdown-preview"></div>
+    </div>
+  </div>
+  <div class="form-actions">
+    <button type="submit">保存</button>
+    <a href="/admin/articles">取消</a>
+  </div>
+</form>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "admin/base.html" %}
+{% block title %}生成静态站{% endblock %}
+
+{% block content %}
+<section class="admin-title">
+  <h1>生成静态站</h1>
+  <p>将前台页面导出到 docs/，用于 GitHub Pages。原图不会被复制。</p>
+</section>
+
+<form class="export-box" method="post">
+  <button type="submit">生成 docs/</button>
+  {% if result %}<p>{{ result }}</p>{% endif %}
+</form>
+{% endblock %}
