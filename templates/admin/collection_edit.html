@@ -16,8 +16,7 @@
     <label>排序<input type="number" name="sort_order" value="{{ collection.sort_order or 0 }}"></label>
   </div>
   <label>简介<textarea name="description" rows="5">{{ collection.description or '' }}</textarea></label>
-  <label class="checkbox"><input type="checkbox" name="is_featured" value="1" {% if collection.is_featured %}checked{% endif %}> 首页精选</label>
-  <label class="checkbox"><input type="checkbox" name="show_in_series" value="1" {% if is_new or collection.show_in_series %}checked{% endif %}> 作为独立作品显示在前台第二栏</label>
+  <label class="checkbox"><input type="checkbox" name="in_travel_feature" value="1" {% if is_new or not collection.show_in_series %}checked{% endif %}> 放进旅行特辑</label>
   <div class="form-actions">
     <button type="submit">保存</button>
     <a href="/admin/collections">取消</a>

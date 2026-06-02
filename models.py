@@ -103,7 +103,6 @@ def save_collection(data, collection_id=None):
         "description": data.get("description", "").strip(),
         "year": data.get("year", "").strip(),
         "location": data.get("location", "").strip(),
-        "is_featured": 1 if data.get("is_featured") else 0,
         "show_in_series": 1 if data.get("show_in_series") else 0,
         "sort_order": int(data.get("sort_order") or 0),
         "updated_at": timestamp,

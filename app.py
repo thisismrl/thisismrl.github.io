@@ -439,8 +439,7 @@ def admin_collection_new():
         data = request.form.to_dict()
         if not data.get("slug"):
             data["slug"] = slugify(data.get("title", ""))
-        data["is_featured"] = request.form.get("is_featured")
-        data["show_in_series"] = request.form.get("show_in_series")
+        data["show_in_series"] = "" if request.form.get("in_travel_feature") else "1"
         try:
             save_collection(data)
             flash("作品集已创建。", "success")
@@ -460,8 +459,7 @@ def admin_collection_edit(collection_id):
         data = request.form.to_dict()
         if not data.get("slug"):
             data["slug"] = slugify(data.get("title", ""))
-        data["is_featured"] = request.form.get("is_featured")
-        data["show_in_series"] = request.form.get("show_in_series")
+        data["show_in_series"] = "" if request.form.get("in_travel_feature") else "1"
         try:
             save_collection(data, collection_id=collection_id)
             flash("作品集已更新。", "success")
