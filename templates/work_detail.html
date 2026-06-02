@@ -21,13 +21,6 @@
   </aside>
 
   <section class="work-scroll">
-    <header class="detail-header">
-      <h1>{{ collection.title }}</h1>
-      {% if collection.subtitle %}<p class="subtitle">{{ collection.subtitle }}</p>{% endif %}
-      <p class="muted">{{ collection.year or 'Undated' }}{% if collection.location %}<br>{{ collection.location }}{% endif %}</p>
-      {% if collection.description %}<p>{{ collection.description }}</p>{% endif %}
-    </header>
-
     <div class="photo-sequence">
       {% for photo in photos %}
         <figure>

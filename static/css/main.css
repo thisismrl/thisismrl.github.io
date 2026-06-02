@@ -359,6 +359,7 @@ figcaption {
   width: 100%;
   margin-bottom: 15px;
   background: var(--soft);
+  cursor: pointer;
 }
 
 .works-preview-image img {
@@ -366,6 +367,11 @@ figcaption {
   max-height: calc(100vh - 168px);
   object-fit: contain;
   object-position: left top;
+  transition: opacity 180ms ease;
+}
+
+.works-preview-image:hover img {
+  opacity: 0.82;
 }
 
 .works-preview-caption {

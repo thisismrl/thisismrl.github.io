@@ -30,12 +30,6 @@
   </aside>
 
   <section class="work-scroll">
-    <header class="detail-header">
-      <h1>{{ timeline.title }}</h1>
-      <p class="muted">{{ timeline.year or 'Undated' }}{% if timeline.location %}<br>{{ timeline.location }}{% endif %}</p>
-      {% if timeline.description %}<p>{{ timeline.description }}</p>{% endif %}
-    </header>
-
     <div class="photo-sequence">
       {% for photo in photos %}
         <figure>
