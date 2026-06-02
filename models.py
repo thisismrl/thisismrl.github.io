@@ -103,12 +103,13 @@ def save_collection(data, collection_id=None):
         "description": data.get("description", "").strip(),
         "year": data.get("year", "").strip(),
         "location": data.get("location", "").strip(),
-        "cover_photo_id": data.get("cover_photo_id") or None,
         "is_featured": 1 if data.get("is_featured") else 0,
         "show_in_series": 1 if data.get("show_in_series") else 0,
         "sort_order": int(data.get("sort_order") or 0),
         "updated_at": timestamp,
     }
+    if "cover_photo_id" in data:
+        values["cover_photo_id"] = data.get("cover_photo_id") or None
     with get_db() as conn:
         if collection_id:
             assignments = ", ".join(f"{key} = ?" for key in values.keys())

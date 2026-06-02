@@ -318,6 +318,13 @@ label {
   width: auto;
 }
 
+.inline-checks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px 22px;
+  align-items: center;
+}
+
 .form-actions {
   display: flex;
   align-items: center;

@@ -16,18 +16,6 @@
     <label>排序<input type="number" name="sort_order" value="{{ collection.sort_order or 0 }}"></label>
   </div>
   <label>简介<textarea name="description" rows="5">{{ collection.description or '' }}</textarea></label>
-  {% if photos %}
-    <label>封面照片
-      <select name="cover_photo_id">
-        <option value="">无</option>
-        {% for photo in photos %}
-          <option value="{{ photo.id }}" {% if collection.cover_photo_id == photo.id %}selected{% endif %}>{{ photo.title or photo.filename }}</option>
-        {% endfor %}
-      </select>
-    </label>
-  {% else %}
-    <input type="hidden" name="cover_photo_id" value="">
-  {% endif %}
   <label class="checkbox"><input type="checkbox" name="is_featured" value="1" {% if collection.is_featured %}checked{% endif %}> 首页精选</label>
   <label class="checkbox"><input type="checkbox" name="show_in_series" value="1" {% if is_new or collection.show_in_series %}checked{% endif %}> 作为独立作品显示在前台第二栏</label>
   <div class="form-actions">
@@ -49,15 +37,6 @@
 
     <form method="post" action="/admin/collections/{{ collection.id }}/photos" data-batch-photo-form>
       {% if photos %}
-        <label>作品集封面
-          <select name="cover_photo_id">
-            <option value="">无</option>
-            {% for photo in photos %}
-              <option value="{{ photo.id }}" {% if collection.cover_photo_id == photo.id %}selected{% endif %}>{{ photo.title or photo.filename }}</option>
-            {% endfor %}
-          </select>
-        </label>
-
         <div class="collection-photo-grid">
           {% for photo in photos %}
             <div class="collection-photo-item">
@@ -78,7 +57,10 @@
                   <label>作品排序<input type="number" name="sort_order_{{ photo.id }}" value="{{ photo.sort_order or 0 }}"></label>
                   <label>轮播排序<input type="number" name="featured_order_{{ photo.id }}" value="{{ photo.featured_order or 0 }}"></label>
                 </div>
-                <label class="checkbox"><input type="checkbox" name="is_featured_{{ photo.id }}" value="1" {% if photo.is_featured %}checked{% endif %}> 加入首页轮播</label>
+                <div class="inline-checks">
+                  <label class="checkbox"><input type="checkbox" name="is_featured_{{ photo.id }}" value="1" {% if photo.is_featured %}checked{% endif %}> 加入首页轮播</label>
+                  <label class="checkbox"><input type="radio" name="cover_photo_id" value="{{ photo.id }}" {% if collection.cover_photo_id == photo.id %}checked{% endif %}> 作品集封面</label>
+                </div>
                 <a href="/admin/photos/{{ photo.id }}/edit">单独编辑</a>
               </div>
             </div>
