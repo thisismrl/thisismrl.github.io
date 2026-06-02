@@ -39,8 +39,8 @@ if (homeSlideshow) {
 const worksBrowser = document.querySelector("[data-works-browser]");
 
 if (worksBrowser) {
-  const modeSwitches = [...worksBrowser.querySelectorAll(".works-mode-switch")];
-  const modePanels = [...worksBrowser.querySelectorAll("[data-mode-panel]")];
+  const projectSwitches = [...worksBrowser.querySelectorAll(".works-project-switch")];
+  const projectPanels = [...worksBrowser.querySelectorAll("[data-project-panel]")];
   const switches = [...worksBrowser.querySelectorAll(".works-switch")];
   const previewLink = worksBrowser.querySelector("[data-preview-link]");
   const previewOpen = worksBrowser.querySelector("[data-preview-open]");
@@ -54,6 +54,10 @@ if (worksBrowser) {
 
     switches.forEach((other) => other.classList.remove("is-active"));
     item.classList.add("is-active");
+    if (item.dataset.hideSubnav) {
+      projectSwitches.forEach((other) => other.classList.remove("is-active"));
+      projectPanels.forEach((panel) => panel.classList.remove("is-active"));
+    }
 
     const title = item.dataset.title || "";
     const year = item.dataset.year || "";
@@ -75,17 +79,17 @@ if (worksBrowser) {
     }
   };
 
-  const activateMode = (mode) => {
-    modeSwitches.forEach((item) => item.classList.toggle("is-active", item.dataset.mode === mode));
-    modePanels.forEach((panel) => panel.classList.toggle("is-active", panel.dataset.modePanel === mode));
-    const firstItem = worksBrowser.querySelector(`[data-mode-panel="${mode}"] .works-switch`);
+  const activateProject = (project) => {
+    projectSwitches.forEach((item) => item.classList.toggle("is-active", item.dataset.project === project));
+    projectPanels.forEach((panel) => panel.classList.toggle("is-active", panel.dataset.projectPanel === project));
+    const firstItem = worksBrowser.querySelector(`[data-project-panel="${project}"] .works-switch`);
     updatePreview(firstItem);
   };
 
-  modeSwitches.forEach((item) => {
+  projectSwitches.forEach((item) => {
     item.addEventListener("click", (event) => {
       event.preventDefault();
-      activateMode(item.dataset.mode || "timeline");
+      activateProject(item.dataset.project || "travel");
     });
   });
 

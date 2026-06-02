@@ -3,15 +3,14 @@
 
 {% block content %}
 <article class="work-detail with-fixed-subnav three-column-works">
-  <aside class="works-mode-menu">
-    <nav aria-label="Work views">
-      <a class="works-mode-switch" href="/works/">以时间线</a>
-      <a class="works-mode-switch is-active" href="/works/">以作品集</a>
-    </nav>
-  </aside>
-
-  <aside class="works-menu detail-subnav">
-    <nav class="works-list is-active" aria-label="Work series">
+  <aside class="works-menu">
+    <nav aria-label="Works">
+      {% if timelines %}
+        <a class="works-project-switch" href="/works/">
+          <span>旅行特辑</span>
+          <span>Travel</span>
+        </a>
+      {% endif %}
       {% for item in collections %}
         <a class="works-switch{% if item.id == collection.id %} is-active{% endif %}" href="/works/{{ item.slug }}/">
           <span>{{ item.title }}</span>

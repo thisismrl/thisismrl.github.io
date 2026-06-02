@@ -126,9 +126,12 @@ def apply_article_cover_upload(data, files):
 
 
 def timeline_slug_source(data):
-    parts = [data.get("location", "").strip(), data.get("year", "").strip()]
+    title = data.get("title", "").strip()
+    location = data.get("location", "").strip()
+    year = data.get("year", "").strip()
+    parts = [location or title, year]
     value = "-".join(part for part in parts if part)
-    return value or data.get("title", "")
+    return value or title
 
 
 def login_required(view):

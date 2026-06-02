@@ -263,8 +263,8 @@ figcaption {
   margin-left: clamp(190px, 19vw, 250px);
 }
 
-.works-mode-menu,
 .works-menu,
+.works-submenu,
 .texts-menu {
   position: fixed;
   top: 133px;
@@ -272,12 +272,12 @@ figcaption {
   padding-top: 0;
 }
 
-.works-mode-menu {
+.works-menu {
   left: 180px;
-  width: 86px;
+  width: 100px;
 }
 
-.works-menu {
+.works-submenu {
   left: 292px;
   width: 154px;
 }
@@ -295,22 +295,22 @@ figcaption {
   color: #222;
 }
 
-.works-mode-menu nav,
 .works-menu nav,
+.works-submenu nav,
 .texts-menu nav {
   display: grid;
   gap: 12px;
 }
 
-.works-list {
+.works-sublist {
   display: none !important;
 }
 
-.works-list.is-active {
+.works-sublist.is-active {
   display: grid !important;
 }
 
-.works-mode-switch,
+.works-project-switch,
 .works-switch,
 .texts-switch {
   display: grid;
@@ -318,10 +318,11 @@ figcaption {
   color: var(--subtle);
 }
 
-.works-mode-switch {
+.works-project-switch {
   color: #6f6967;
 }
 
+.works-project-switch span:first-child,
 .works-switch span:first-child,
 .texts-switch {
   color: #6f6967;
@@ -331,8 +332,8 @@ figcaption {
   font-size: 12px;
 }
 
-.works-mode-switch.is-active,
-.works-mode-switch:hover,
+.works-project-switch.is-active,
+.works-project-switch:hover,
 .works-switch.is-active,
 .works-switch:hover,
 .texts-switch.is-active,
@@ -340,7 +341,7 @@ figcaption {
   color: var(--muted);
 }
 
-.works-mode-switch.is-active,
+.works-project-switch.is-active span:first-child,
 .works-switch.is-active span:first-child,
 .texts-switch.is-active {
   color: #222;
@@ -816,20 +817,16 @@ figcaption {
     margin-left: 0;
   }
 
-  .works-mode-menu,
   .works-menu,
+  .works-submenu,
   .texts-menu {
     position: static;
     width: auto;
     margin-bottom: 24px;
   }
 
-  .works-mode-menu nav {
-    display: flex;
-    gap: 16px;
-  }
-
   .works-menu nav,
+  .works-submenu nav,
   .texts-menu nav {
     gap: 10px;
   }
