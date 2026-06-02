@@ -386,21 +386,6 @@ figcaption {
   margin: 1px 0 0;
 }
 
-.works-open-link {
-  display: inline-block;
-  margin-top: 16px;
-  color: var(--text);
-  font-size: 14px;
-  line-height: 1.6;
-  text-decoration: underline;
-  text-underline-offset: 4px;
-  text-decoration-thickness: 1px;
-}
-
-.works-open-link:hover {
-  color: var(--muted);
-}
-
 .series-meta {
   color: var(--muted);
 }

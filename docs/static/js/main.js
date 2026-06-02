@@ -43,7 +43,6 @@ if (worksBrowser) {
   const projectPanels = [...worksBrowser.querySelectorAll("[data-project-panel]")];
   const switches = [...worksBrowser.querySelectorAll(".works-switch")];
   const previewLink = worksBrowser.querySelector("[data-preview-link]");
-  const previewOpen = worksBrowser.querySelector("[data-preview-open]");
   const previewImage = worksBrowser.querySelector("[data-preview-image]");
   const previewTitle = worksBrowser.querySelector("[data-preview-title]");
   const previewMeta = worksBrowser.querySelector("[data-preview-meta]");
@@ -67,7 +66,6 @@ if (worksBrowser) {
     const url = item.dataset.url || item.getAttribute("href") || "#";
 
     if (previewLink) previewLink.setAttribute("href", url);
-    if (previewOpen) previewOpen.setAttribute("href", url);
     if (previewTitle) previewTitle.textContent = title;
     if (previewMeta) previewMeta.textContent = location ? `${year} / ${location}` : year;
     if (previewDescription) previewDescription.textContent = description;
