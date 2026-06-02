@@ -27,7 +27,7 @@ def set_setting(key, value):
 
 def all_settings():
     defaults = {
-        "site_name": "龍梓洋｜Charles Long",
+        "site_name": "龍梓洋 Charles Long",
         "tagline": "摄影、文字与个人档案。",
         "about_text": "",
         "contact_email": "",
