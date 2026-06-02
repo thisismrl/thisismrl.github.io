@@ -369,10 +369,7 @@ figcaption {
 }
 
 .works-preview-caption {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 28px;
-  align-items: start;
+  display: block;
   color: var(--muted);
 }
 
@@ -389,12 +386,19 @@ figcaption {
   margin: 1px 0 0;
 }
 
-.works-preview-caption a {
-  color: var(--muted);
+.works-open-link {
+  display: inline-block;
+  margin-top: 16px;
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.6;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
 }
 
-.works-preview-caption a:hover {
-  color: var(--text);
+.works-open-link:hover {
+  color: var(--muted);
 }
 
 .series-meta {
