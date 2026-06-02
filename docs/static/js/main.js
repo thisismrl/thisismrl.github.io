@@ -97,6 +97,15 @@ if (worksBrowser) {
       updatePreview(item);
     });
   });
+
+  const previewSlug = new URLSearchParams(window.location.search).get("preview");
+  if (previewSlug) {
+    const previewItem = switches.find((item) => item.dataset.slug === previewSlug);
+    if (previewItem) {
+      activateProject("travel");
+      updatePreview(previewItem);
+    }
+  }
 }
 
 const textsBrowser = document.querySelector("[data-texts-browser]");

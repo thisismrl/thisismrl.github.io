@@ -21,7 +21,7 @@
   <aside class="works-submenu detail-subnav">
     <nav class="works-sublist is-active" aria-label="Travel works">
       {% for item in timelines %}
-        <a class="works-switch{% if item.id == timeline.id %} is-active{% endif %}" href="/works/timeline/{{ item.slug }}/">
+        <a class="works-switch{% if item.id == timeline.id %} is-active{% endif %}" href="/works/?preview={{ item.slug }}">
           <span>{{ item.title }}</span>
           <span>{{ item.year or 'Undated' }}</span>
         </a>
