@@ -704,6 +704,10 @@ figcaption {
   line-height: 2.05;
 }
 
+.about-contact {
+  margin-top: 56px;
+}
+
 .archive-list {
   width: min(700px, 100%);
 }

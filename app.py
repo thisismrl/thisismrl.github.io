@@ -344,7 +344,7 @@ def about():
 
 @app.route("/contact/")
 def contact():
-    return render_template("contact.html")
+    return redirect(url_for("about"))
 
 
 @app.route("/admin/login", methods=["GET", "POST"])

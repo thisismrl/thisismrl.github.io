@@ -4,7 +4,7 @@
 {% block content %}
 <article class="text-detail">
   <header class="text-header">
-    <h1>关于</h1>
+    <h1 data-i18n data-zh="关于" data-en="About">关于</h1>
   </header>
   <div class="prose about-prose">
     {% if site_settings.about_text %}
@@ -14,5 +14,11 @@
       <p>你可以在本地后台的设置中编辑关于页面。</p>
     {% endif %}
   </div>
+  <section class="contact-list about-contact">
+    {% if site_settings.contact_email %}<a href="mailto:{{ site_settings.contact_email }}">{{ site_settings.contact_email }}</a>{% endif %}
+    {% if site_settings.instagram %}<a href="{{ site_settings.instagram }}">Instagram</a>{% endif %}
+    {% if site_settings.xiaohongshu %}<a href="{{ site_settings.xiaohongshu }}">小红书</a>{% endif %}
+    {% if site_settings.github %}<a href="{{ site_settings.github }}">GitHub</a>{% endif %}
+  </section>
 </article>
 {% endblock %}

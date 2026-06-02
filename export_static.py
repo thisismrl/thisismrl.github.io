@@ -42,7 +42,6 @@ def export_site(flask_app=None):
         ("/texts/notes/", DOCS_DIR / "texts" / "notes" / "index.html"),
         ("/archive/", DOCS_DIR / "archive" / "index.html"),
         ("/about/", DOCS_DIR / "about" / "index.html"),
-        ("/contact/", DOCS_DIR / "contact" / "index.html"),
     ]
 
     for collection in collection_list(show_in_series=True):
