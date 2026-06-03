@@ -665,11 +665,30 @@ figcaption {
 
 .inline-reading-body {
   width: min(580px, 100%);
+  font-family: inherit;
+  font-size: 13px;
+  line-height: 1.95;
+  font-weight: 300;
 }
 
 .inline-reading-body h2 {
-  margin: 0 0 1.6em;
+  margin: 0 0 1.35em;
   color: var(--text);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.8;
+}
+
+.inline-reading-body p {
+  margin: 0 0 1.45em;
+}
+
+.inline-reading-body.poem-prose {
+  line-height: 1.95;
+}
+
+.inline-reading-body.poem-prose p {
+  margin-bottom: 1.65em;
 }
 
 .text-row {
