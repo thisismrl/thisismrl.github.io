@@ -242,18 +242,20 @@ def work_detail(slug):
 @app.route("/texts/")
 def texts():
     articles = article_list(status="published")
-    categories = ["Essay", "Fiction", "Notes"]
+    categories = ["Essay", "Fiction", "Poem", "Notes"]
     grouped = {category: [a for a in articles if a["category"] == category] for category in categories}
     return render_template("texts.html", articles=articles, grouped=grouped, categories=categories, active_category="Essay")
 
 
 @app.route("/texts/essay/")
 @app.route("/texts/fiction/")
+@app.route("/texts/poem/")
 @app.route("/texts/notes/")
 def text_category():
     category_map = {
         "essay": "Essay",
         "fiction": "Fiction",
+        "poem": "Poem",
         "notes": "Notes",
     }
     slug = request.path.strip("/").split("/")[-1]
@@ -261,7 +263,7 @@ def text_category():
     if not category:
         abort(404)
     articles = article_list(status="published")
-    categories = ["Essay", "Fiction", "Notes"]
+    categories = ["Essay", "Fiction", "Poem", "Notes"]
     grouped = {item: [a for a in articles if a["category"] == item] for item in categories}
     return render_template("texts.html", articles=articles, grouped=grouped, categories=categories, active_category=category)
 

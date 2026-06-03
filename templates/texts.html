@@ -11,9 +11,9 @@
           href="/texts/{{ category|lower }}/"
           data-category="{{ category }}"
           data-i18n
-          data-zh="{% if category == "Essay" %}散文{% elif category == "Fiction" %}小说{% else %}随笔{% endif %}"
-          data-en="{% if category == "Essay" %}Essay{% elif category == "Fiction" %}Novel{% else %}Journal{% endif %}"
-        >{% if category == "Essay" %}散文{% elif category == "Fiction" %}小说{% else %}随笔{% endif %}</a>
+          data-zh="{% if category == "Essay" %}散文{% elif category == "Fiction" %}小说{% elif category == "Poem" %}诗歌{% else %}随笔{% endif %}"
+          data-en="{% if category == "Essay" %}Essay{% elif category == "Fiction" %}Novel{% elif category == "Poem" %}Poem{% else %}Journal{% endif %}"
+        >{% if category == "Essay" %}散文{% elif category == "Fiction" %}小说{% elif category == "Poem" %}诗歌{% else %}随笔{% endif %}</a>
       {% endfor %}
     </nav>
   </aside>
@@ -44,9 +44,9 @@
                 <span
                   class="article-kind"
                   data-i18n
-                  data-zh="{% if article.category == "Essay" %}散文{% elif article.category == "Fiction" %}小说{% else %}随笔{% endif %}"
-                  data-en="{% if article.category == "Essay" %}Essay{% elif article.category == "Fiction" %}Novel{% else %}Journal{% endif %}"
-                >{% if article.category == "Essay" %}散文{% elif article.category == "Fiction" %}小说{% else %}随笔{% endif %}</span>
+                  data-zh="{% if article.category == "Essay" %}散文{% elif article.category == "Fiction" %}小说{% elif article.category == "Poem" %}诗歌{% else %}随笔{% endif %}"
+                  data-en="{% if article.category == "Essay" %}Essay{% elif article.category == "Fiction" %}Novel{% elif article.category == "Poem" %}Poem{% else %}Journal{% endif %}"
+                >{% if article.category == "Essay" %}散文{% elif article.category == "Fiction" %}小说{% elif article.category == "Poem" %}诗歌{% else %}随笔{% endif %}</span>
                 <span class="article-title">{{ article.title }}</span>
                 {% if article.summary %}<span class="article-summary">{{ article.summary }}</span>{% endif %}
                 {% if article.published_at %}<span class="article-date">{{ article.published_at[:10] }}</span>{% endif %}

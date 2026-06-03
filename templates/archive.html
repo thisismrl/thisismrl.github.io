@@ -15,7 +15,7 @@
         {% for item in items %}
           <a class="archive-row" href="{{ item.url }}">
             <span>{{ item.title }}</span>
-            <span>{% if item.kind == "Essay" %}散文{% elif item.kind == "Fiction" %}小说{% elif item.kind == "Notes" %}随笔{% elif item.kind == "Work" %}作品{% else %}{{ item.kind }}{% endif %}{% if item.meta %} / {{ item.meta }}{% endif %}</span>
+            <span>{% if item.kind == "Essay" %}散文{% elif item.kind == "Fiction" %}小说{% elif item.kind == "Poem" %}诗歌{% elif item.kind == "Notes" %}随笔{% elif item.kind == "Work" %}作品{% else %}{{ item.kind }}{% endif %}{% if item.meta %} / {{ item.meta }}{% endif %}</span>
           </a>
         {% endfor %}
       </div>
