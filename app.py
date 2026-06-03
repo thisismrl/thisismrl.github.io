@@ -55,6 +55,8 @@ app = Flask(__name__)
 app.secret_key = read_secret_key()
 init_db()
 
+TEXT_CATEGORIES = ["Fiction", "Notes", "Poem"]
+
 
 def slugify(value):
     value = value.lower().strip()
@@ -81,7 +83,7 @@ def text_excerpt(text, length=120):
 
 def normalize_article_data(form):
     data = form.to_dict()
-    category = data.get("category", "Essay").strip() or "Essay"
+    category = data.get("category", "Fiction").strip() or "Fiction"
     data["category"] = category
     data["status"] = data.get("status", "draft").strip() or "draft"
     data["content_markdown"] = data.get("content_markdown", "").strip()
@@ -89,13 +91,13 @@ def normalize_article_data(form):
     if not data.get("published_at") and data["status"] == "published":
         data["published_at"] = datetime.now().strftime("%Y-%m-%d")
 
-    if category == "Notes":
+    if category in {"Notes", "Poem"}:
         data["cover_image"] = ""
         if not data.get("summary"):
             data["summary"] = text_excerpt(data["content_markdown"], 160)
         if not data.get("title"):
             date_label = data.get("published_at") or datetime.now().strftime("%Y-%m-%d")
-            data["title"] = f"Note {date_label}"
+            data["title"] = f"{'Poem' if category == 'Poem' else 'Note'} {date_label}"
     elif not data.get("summary"):
         data["summary"] = text_excerpt(data["content_markdown"], 140)
 
@@ -106,7 +108,7 @@ def normalize_article_data(form):
 
 
 def apply_article_cover_upload(data, files):
-    if data.get("category") == "Notes":
+    if data.get("category") in {"Notes", "Poem"}:
         data["cover_image"] = ""
         return data
 
@@ -199,6 +201,8 @@ def news():
         })
 
     for article in article_list(status="published"):
+        if article["category"] not in TEXT_CATEGORIES:
+            continue
         date = article.get("published_at") or article.get("updated_at") or article.get("created_at") or ""
         items.append({
             "date": date,
@@ -242,28 +246,26 @@ def work_detail(slug):
 @app.route("/texts/")
 def texts():
     articles = article_list(status="published")
-    categories = ["Essay", "Fiction", "Poem", "Notes"]
+    categories = TEXT_CATEGORIES
     grouped = {category: [a for a in articles if a["category"] == category] for category in categories}
-    return render_template("texts.html", articles=articles, grouped=grouped, categories=categories, active_category="Essay")
+    return render_template("texts.html", articles=articles, grouped=grouped, categories=categories, active_category="Fiction")
 
 
-@app.route("/texts/essay/")
 @app.route("/texts/fiction/")
-@app.route("/texts/poem/")
 @app.route("/texts/notes/")
+@app.route("/texts/poem/")
 def text_category():
     category_map = {
-        "essay": "Essay",
         "fiction": "Fiction",
-        "poem": "Poem",
         "notes": "Notes",
+        "poem": "Poem",
     }
     slug = request.path.strip("/").split("/")[-1]
     category = category_map.get(slug)
     if not category:
         abort(404)
     articles = article_list(status="published")
-    categories = ["Essay", "Fiction", "Poem", "Notes"]
+    categories = TEXT_CATEGORIES
     grouped = {item: [a for a in articles if a["category"] == item] for item in categories}
     return render_template("texts.html", articles=articles, grouped=grouped, categories=categories, active_category=category)
 
@@ -289,6 +291,8 @@ def archive():
             "url": url_for("work_detail", slug=collection["slug"]),
         })
     for article in article_list(status="published"):
+        if article["category"] not in TEXT_CATEGORIES:
+            continue
         date = article.get("published_at") or article.get("created_at") or ""
         year = date[:4] if date else "Undated"
         items.append({

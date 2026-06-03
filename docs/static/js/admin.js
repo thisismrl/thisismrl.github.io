@@ -62,19 +62,20 @@ if (articleForm) {
 
   const updateArticleFields = () => {
     const value = category.value;
+    const isStreamType = value === "Notes" || value === "Poem";
     guides.forEach((guide) => {
       guide.classList.toggle("is-active", guide.dataset.guide === value);
     });
     if (cover) {
-      cover.hidden = value === "Notes";
+      cover.hidden = isStreamType;
     }
     if (title) {
-      title.required = value !== "Notes";
-      title.placeholder = value === "Notes" ? "可不填。为空时会根据日期自动生成。" : "";
+      title.required = value === "Fiction";
+      title.placeholder = isStreamType ? "可不填。为空时会根据日期自动生成。" : "";
     }
     if (summary) {
-      summary.placeholder = value === "Notes"
-        ? "可不填。用于动态和 Notes 列表；为空时会从正文生成。"
+      summary.placeholder = isStreamType
+        ? "可不填。用于文字页的时间流；为空时会从正文生成。"
         : "可不填。用于文字页和动态页的标题下方。";
     }
   };

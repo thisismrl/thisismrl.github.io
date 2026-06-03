@@ -5,8 +5,8 @@
 <section class="news-page">
   <div class="news-list">
     {% for item in items %}
-      <a class="news-item{% if item.kind == 'Notes' and not item.image %} news-item-note{% endif %}" href="{{ item.url }}">
-        {% if item.kind != 'Notes' or item.image %}
+      <a class="news-item{% if item.kind in ['Notes', 'Poem'] and not item.image %} news-item-note{% endif %}" href="{{ item.url }}">
+        {% if item.kind not in ['Notes', 'Poem'] or item.image %}
           <span class="news-thumb">
             {% if item.image %}
               <img src="{{ item.image }}" alt="{{ item.title }}">
@@ -14,7 +14,7 @@
           </span>
         {% endif %}
         <span class="news-body">
-          <span class="news-kind">{% if item.kind == "Essay" %}散文{% elif item.kind == "Fiction" %}小说{% elif item.kind == "Poem" %}诗歌{% elif item.kind == "Notes" %}随笔{% else %}{{ item.kind }}{% endif %}{% if item.meta %} / {{ item.meta }}{% endif %}</span>
+          <span class="news-kind">{% if item.kind == "Fiction" %}小说{% elif item.kind == "Poem" %}诗歌{% elif item.kind == "Notes" %}随笔{% else %}{{ item.kind }}{% endif %}{% if item.meta %} / {{ item.meta }}{% endif %}</span>
           <span class="news-title">{{ item.title }}</span>
           {% if item.summary %}<span class="news-summary">{{ item.summary }}</span>{% endif %}
         </span>

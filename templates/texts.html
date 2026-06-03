@@ -11,9 +11,9 @@
           href="/texts/{{ category|lower }}/"
           data-category="{{ category }}"
           data-i18n
-          data-zh="{% if category == "Essay" %}散文{% elif category == "Fiction" %}小说{% elif category == "Poem" %}诗歌{% else %}随笔{% endif %}"
-          data-en="{% if category == "Essay" %}Essay{% elif category == "Fiction" %}Novel{% elif category == "Poem" %}Poem{% else %}Journal{% endif %}"
-        >{% if category == "Essay" %}散文{% elif category == "Fiction" %}小说{% elif category == "Poem" %}诗歌{% else %}随笔{% endif %}</a>
+          data-zh="{% if category == "Fiction" %}小说{% elif category == "Poem" %}诗歌{% else %}随笔{% endif %}"
+          data-en="{% if category == "Fiction" %}Novel{% elif category == "Poem" %}Poem{% else %}Journal{% endif %}"
+        >{% if category == "Fiction" %}小说{% elif category == "Poem" %}诗歌{% else %}随笔{% endif %}</a>
       {% endfor %}
     </nav>
   </aside>
@@ -21,7 +21,7 @@
   <div class="texts-panels">
     {% for category in categories %}
       <section class="texts-panel{% if category == active_category %} is-active{% endif %}" data-category-panel="{{ category }}">
-        {% if category == "Notes" %}
+        {% if category in ["Notes", "Poem"] %}
           <div class="notes-stream">
             {% for article in grouped[category] %}
               <a class="note-line" href="/texts/{{ article.slug }}/">
@@ -29,7 +29,7 @@
                 <span>{{ article.summary or article.title }}</span>
               </a>
             {% else %}
-              <p class="empty-note">No notes published yet.</p>
+              <p class="empty-note">No {{ category|lower }} published yet.</p>
             {% endfor %}
           </div>
         {% else %}
@@ -44,9 +44,9 @@
                 <span
                   class="article-kind"
                   data-i18n
-                  data-zh="{% if article.category == "Essay" %}散文{% elif article.category == "Fiction" %}小说{% elif article.category == "Poem" %}诗歌{% else %}随笔{% endif %}"
-                  data-en="{% if article.category == "Essay" %}Essay{% elif article.category == "Fiction" %}Novel{% elif article.category == "Poem" %}Poem{% else %}Journal{% endif %}"
-                >{% if article.category == "Essay" %}散文{% elif article.category == "Fiction" %}小说{% elif article.category == "Poem" %}诗歌{% else %}随笔{% endif %}</span>
+                  data-zh="小说"
+                  data-en="Novel"
+                >小说</span>
                 <span class="article-title">{{ article.title }}</span>
                 {% if article.summary %}<span class="article-summary">{{ article.summary }}</span>{% endif %}
                 {% if article.published_at %}<span class="article-date">{{ article.published_at[:10] }}</span>{% endif %}
