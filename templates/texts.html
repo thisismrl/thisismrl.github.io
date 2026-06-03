@@ -22,12 +22,17 @@
     {% for category in categories %}
       <section class="texts-panel{% if category == active_category %} is-active{% endif %}" data-category-panel="{{ category }}">
         {% if category in ["Essay", "Notes", "Poem"] %}
-          <div class="notes-stream">
+          <div class="inline-reading-stream">
             {% for article in grouped[category] %}
-              <a class="note-line" href="/texts/{{ article.slug }}/">
+              <article class="inline-reading-item">
                 <time>{{ (article.published_at or '')[:10] }}</time>
-                <span>{{ article.summary or article.title }}</span>
-              </a>
+                <div class="inline-reading-body prose{% if category == 'Poem' %} poem-prose{% endif %}">
+                  {% if article.title %}
+                    <h2>{{ article.title }}</h2>
+                  {% endif %}
+                  {{ article.content_html|safe }}
+                </div>
+              </article>
             {% else %}
               <p class="empty-note">No {{ category|lower }} published yet.</p>
             {% endfor %}
