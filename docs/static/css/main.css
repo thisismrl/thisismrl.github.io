@@ -693,6 +693,14 @@ figcaption {
   margin: 0 0 1.75em;
 }
 
+.poem-prose {
+  line-height: 2.05;
+}
+
+.poem-prose p {
+  margin-bottom: 2.2em;
+}
+
 .prose h2,
 .prose h3 {
   margin: 2.5em 0 1em;

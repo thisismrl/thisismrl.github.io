@@ -73,6 +73,13 @@ def render_markdown(text):
     )
 
 
+def render_article_markdown(text, category):
+    extensions = ["extra", "sane_lists", "smarty"]
+    if category == "Poem":
+        extensions.append("nl2br")
+    return markdown.markdown(text or "", extensions=extensions, output_format="html5")
+
+
 def text_excerpt(text, length=120):
     plain = re.sub(r"[#>*_`~\-\[\]\(\)]", "", text or "")
     plain = re.sub(r"\s+", " ", plain).strip()
@@ -575,7 +582,7 @@ def admin_article_new():
         data = normalize_article_data(request.form)
         try:
             data = apply_article_cover_upload(data, request.files)
-            save_article(data, render_markdown(data.get("content_markdown", "")))
+            save_article(data, render_article_markdown(data.get("content_markdown", ""), data.get("category")))
             flash("文字已创建。", "success")
             return redirect(url_for("admin_articles"))
         except Exception as exc:
@@ -593,7 +600,11 @@ def admin_article_edit(article_id):
         data = normalize_article_data(request.form)
         try:
             data = apply_article_cover_upload(data, request.files)
-            save_article(data, render_markdown(data.get("content_markdown", "")), article_id=article_id)
+            save_article(
+                data,
+                render_article_markdown(data.get("content_markdown", ""), data.get("category")),
+                article_id=article_id,
+            )
             flash("文字已更新。", "success")
             return redirect(url_for("admin_articles"))
         except Exception as exc:
