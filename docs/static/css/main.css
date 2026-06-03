@@ -663,34 +663,6 @@ figcaption {
   line-height: 2.08;
 }
 
-.inline-reading-body {
-  width: min(580px, 100%);
-  font-family: inherit;
-  font-size: 13px;
-  line-height: 1.95;
-  font-weight: 300;
-}
-
-.inline-reading-body h2 {
-  margin: 0 0 1.35em;
-  color: var(--text);
-  font-size: 13px;
-  font-weight: 400;
-  line-height: 1.8;
-}
-
-.inline-reading-body p {
-  margin: 0 0 1.45em;
-}
-
-.inline-reading-body.poem-prose {
-  line-height: 1.95;
-}
-
-.inline-reading-body.poem-prose p {
-  margin-bottom: 1.65em;
-}
-
 .text-row {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 88px;
@@ -746,6 +718,35 @@ figcaption {
 
 .poem-prose p {
   margin-bottom: 2.2em;
+}
+
+.inline-reading-body.prose {
+  width: min(580px, 100%);
+  font-family: "Helvetica Neue", Helvetica, "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Microsoft YaHei", Arial, sans-serif;
+  font-size: 13px;
+  line-height: 1.95;
+  font-weight: 300;
+  color: var(--text);
+}
+
+.inline-reading-body.prose h2 {
+  margin: 0 0 1.35em;
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.8;
+}
+
+.inline-reading-body.prose p {
+  margin: 0 0 1.45em;
+}
+
+.inline-reading-body.prose.poem-prose {
+  line-height: 1.95;
+}
+
+.inline-reading-body.prose.poem-prose p {
+  margin-bottom: 1.65em;
 }
 
 .prose h2,
