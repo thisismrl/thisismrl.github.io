@@ -5,28 +5,90 @@
 <section class="admin-title with-action">
   <div>
     <h1>作品集</h1>
-    <p>按系列管理摄影作品，并决定前台作品页的顺序。</p>
+    <p>按系列管理摄影作品。旅行特辑可以在这里直接拖动或上移下移排序。</p>
   </div>
   <a class="button" href="/admin/collections/new">新建作品集</a>
 </section>
 
-<div class="table-like">
-  {% for collection in collections %}
-    <div class="table-row">
-      <div>
-        <strong>{{ collection.title }}</strong>
-        <span>{{ collection.slug }} / {{ collection.year }}{% if collection.location %} / {{ collection.location }}{% endif %}</span>
-      </div>
-      <div class="row-actions">
-        {% if not collection.show_in_series %}<span class="pill">旅行特辑</span>{% endif %}
-        <a href="/admin/collections/{{ collection.id }}/edit">编辑</a>
-        <form method="post" action="/admin/collections/{{ collection.id }}/delete" data-confirm="Delete this collection and its photos?">
-          <button type="submit">删除</button>
-        </form>
-      </div>
+<section class="sortable-section">
+  <div class="section-heading">
+    <h2>旅行特辑排序</h2>
+    <p>这里的顺序就是前台 Works 里旅行特辑第三栏的顺序。</p>
+  </div>
+  <form method="post" action="/admin/collections/reorder" data-sortable-form>
+    <input type="hidden" name="order_label" value="旅行特辑">
+    <div class="sortable-list" data-sortable-list>
+      {% for collection in travel_collections %}
+        <div class="sortable-row" draggable="true" data-sortable-row>
+          <input type="hidden" name="collection_ids" value="{{ collection.id }}">
+          <span class="drag-handle" title="拖动排序">拖动</span>
+          <div class="sortable-main">
+            <strong>{{ collection.title }}</strong>
+            <span>{{ collection.slug }} / {{ collection.year }}{% if collection.location %} / {{ collection.location }}{% endif %}</span>
+          </div>
+          <div class="sort-buttons">
+            <button type="button" data-move="up">上移</button>
+            <button type="button" data-move="down">下移</button>
+          </div>
+          <div class="row-actions">
+            <a href="/admin/collections/{{ collection.id }}/edit">编辑</a>
+            <button type="submit" form="delete-collection-{{ collection.id }}">删除</button>
+          </div>
+        </div>
+      {% else %}
+        <p class="empty">还没有放进旅行特辑的作品集。</p>
+      {% endfor %}
     </div>
-  {% else %}
-    <p class="empty">还没有作品集。</p>
-  {% endfor %}
-</div>
+    {% if travel_collections %}
+      <div class="form-actions">
+        <button type="submit">保存旅行特辑顺序</button>
+      </div>
+    {% endif %}
+  </form>
+</section>
+
+{% if standalone_collections %}
+  <section class="sortable-section">
+    <div class="section-heading">
+      <h2>独立作品</h2>
+      <p>以后如果有不放入旅行特辑的作品，可以在这里排序。</p>
+    </div>
+    <form method="post" action="/admin/collections/reorder" data-sortable-form>
+      <input type="hidden" name="order_label" value="独立作品">
+      <div class="sortable-list" data-sortable-list>
+        {% for collection in standalone_collections %}
+          <div class="sortable-row" draggable="true" data-sortable-row>
+            <input type="hidden" name="collection_ids" value="{{ collection.id }}">
+            <span class="drag-handle" title="拖动排序">拖动</span>
+            <div class="sortable-main">
+              <strong>{{ collection.title }}</strong>
+              <span>{{ collection.slug }} / {{ collection.year }}{% if collection.location %} / {{ collection.location }}{% endif %}</span>
+            </div>
+            <div class="sort-buttons">
+              <button type="button" data-move="up">上移</button>
+              <button type="button" data-move="down">下移</button>
+            </div>
+            <div class="row-actions">
+              <a href="/admin/collections/{{ collection.id }}/edit">编辑</a>
+              <button type="submit" form="delete-collection-{{ collection.id }}">删除</button>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      <div class="form-actions">
+        <button type="submit">保存独立作品顺序</button>
+      </div>
+    </form>
+  </section>
+{% endif %}
+
+{% for collection in travel_collections + standalone_collections %}
+  <form
+    id="delete-collection-{{ collection.id }}"
+    method="post"
+    action="/admin/collections/{{ collection.id }}/delete"
+    data-confirm="Delete this collection and its photos?"
+    hidden
+  ></form>
+{% endfor %}
 {% endblock %}

@@ -2,7 +2,7 @@ from pathlib import Path
 import shutil
 
 from config import BASE_DIR, DOCS_DIR
-from models import article_list, collection_list, timeline_list
+from models import article_list, collection_list
 
 
 def write_response(client, route, output_path):
@@ -10,7 +10,9 @@ def write_response(client, route, output_path):
     if response.status_code != 200:
         raise RuntimeError(f"{route} returned HTTP {response.status_code}")
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    output_path.write_bytes(response.data)
+    html = response.data.decode("utf-8")
+    cleaned = "\n".join(line.rstrip() for line in html.splitlines()) + "\n"
+    output_path.write_text(cleaned, encoding="utf-8")
 
 
 def copy_if_exists(source, destination):
@@ -44,16 +46,10 @@ def export_site(flask_app=None):
         ("/about/", DOCS_DIR / "about" / "index.html"),
     ]
 
-    for collection in collection_list(show_in_series=True):
+    for collection in collection_list():
         routes.append((
             f"/works/{collection['slug']}/",
             DOCS_DIR / "works" / collection["slug"] / "index.html",
-        ))
-
-    for timeline in timeline_list():
-        routes.append((
-            f"/works/timeline/{timeline['slug']}/",
-            DOCS_DIR / "works" / "timeline" / timeline["slug"] / "index.html",
         ))
 
     for article in article_list(status="published"):

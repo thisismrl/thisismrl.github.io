@@ -234,6 +234,68 @@ label {
   border-top: 1px solid var(--line);
 }
 
+.sortable-section {
+  display: grid;
+  gap: 16px;
+  margin-bottom: 44px;
+}
+
+.section-heading h2 {
+  margin: 0 0 4px;
+  font-size: 22px;
+  font-weight: 400;
+}
+
+.section-heading p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.sortable-list {
+  border-top: 1px solid var(--line);
+}
+
+.sortable-row {
+  display: grid;
+  grid-template-columns: 64px 1fr auto auto;
+  gap: 16px;
+  align-items: center;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.sortable-row.is-dragging {
+  opacity: 0.42;
+}
+
+.drag-handle {
+  color: var(--muted);
+  cursor: grab;
+  user-select: none;
+}
+
+.sortable-main {
+  display: grid;
+  gap: 2px;
+}
+
+.sortable-main span {
+  color: var(--muted);
+}
+
+.sort-buttons {
+  display: flex;
+  gap: 6px;
+}
+
+.sort-buttons button {
+  min-height: 30px;
+  border-color: var(--line);
+  background: #fff;
+  color: var(--text);
+  padding: 4px 8px;
+}
+
 .row-actions {
   display: flex;
   flex-wrap: wrap;
@@ -316,6 +378,13 @@ label {
 
 .checkbox input {
   width: auto;
+}
+
+.inline-checks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px 22px;
+  align-items: center;
 }
 
 .form-actions {
@@ -486,6 +555,7 @@ label {
   .editor-layout,
   .admin-row,
   .table-row,
+  .sortable-row,
   .photo-admin-item,
   .slideshow-admin-grid,
   .slideshow-item,

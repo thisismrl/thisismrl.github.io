@@ -82,3 +82,43 @@ if (articleForm) {
   category.addEventListener("change", updateArticleFields);
   updateArticleFields();
 }
+
+document.querySelectorAll("[data-sortable-list]").forEach((list) => {
+  let draggedRow = null;
+
+  const moveRow = (row, direction) => {
+    if (!row) return;
+    if (direction === "up" && row.previousElementSibling) {
+      list.insertBefore(row, row.previousElementSibling);
+    }
+    if (direction === "down" && row.nextElementSibling) {
+      list.insertBefore(row.nextElementSibling, row);
+    }
+  };
+
+  list.querySelectorAll("[data-move]").forEach((button) => {
+    button.addEventListener("click", () => {
+      moveRow(button.closest("[data-sortable-row]"), button.dataset.move);
+    });
+  });
+
+  list.querySelectorAll("[data-sortable-row]").forEach((row) => {
+    row.addEventListener("dragstart", () => {
+      draggedRow = row;
+      row.classList.add("is-dragging");
+    });
+
+    row.addEventListener("dragend", () => {
+      row.classList.remove("is-dragging");
+      draggedRow = null;
+    });
+
+    row.addEventListener("dragover", (event) => {
+      event.preventDefault();
+      if (!draggedRow || draggedRow === row) return;
+      const box = row.getBoundingClientRect();
+      const afterMiddle = event.clientY > box.top + box.height / 2;
+      list.insertBefore(draggedRow, afterMiddle ? row.nextSibling : row);
+    });
+  });
+});

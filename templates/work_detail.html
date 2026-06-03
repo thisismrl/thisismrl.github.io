@@ -5,8 +5,8 @@
 <article class="work-detail with-fixed-subnav three-column-works">
   <aside class="works-menu">
     <nav aria-label="Works">
-      {% if timelines %}
-        <a class="works-project-switch" href="/works/">
+      {% if travel_collections %}
+        <a class="works-project-switch{% if not collection.show_in_series %} is-active{% endif %}" href="/works/">
           <span>旅行特辑</span>
           <span>Travel</span>
         </a>
@@ -19,6 +19,19 @@
       {% endfor %}
     </nav>
   </aside>
+
+  {% if not collection.show_in_series and travel_collections %}
+    <aside class="works-submenu detail-subnav">
+      <nav class="works-sublist is-active" aria-label="Travel works">
+        {% for item in travel_collections %}
+          <a class="works-switch{% if item.id == collection.id %} is-active{% endif %}" href="/works/?preview={{ item.slug }}">
+            <span>{{ item.title }}</span>
+            <span>{{ item.year or 'Undated' }}</span>
+          </a>
+        {% endfor %}
+      </nav>
+    </aside>
+  {% endif %}
 
   <section class="work-scroll">
     <div class="photo-sequence">

@@ -15,14 +15,6 @@
       {% endfor %}
     </select>
   </label>
-  <label>时间线分组
-    <select name="timeline_id">
-      <option value="">未归入时间线</option>
-      {% for timeline in timelines %}
-        <option value="{{ timeline.id }}" {% if photo.timeline_id == timeline.id %}selected{% endif %}>{{ timeline.title }}</option>
-      {% endfor %}
-    </select>
-  </label>
   <div class="form-grid">
     <label>标题<input name="title" value="{{ photo.title or '' }}"></label>
     <label>拍摄日期<input name="shot_date" value="{{ photo.shot_date or '' }}"></label>
