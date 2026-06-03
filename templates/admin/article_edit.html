@@ -12,7 +12,7 @@
     <label>Slug<input name="slug" value="{{ article.slug or '' }}"></label>
     <label>分类
       <select name="category" data-article-category>
-        {% for category in ["Fiction", "Notes", "Poem"] %}
+        {% for category in ["Fiction", "Essay", "Notes", "Poem"] %}
           <option value="{{ category }}" {% if article.category == category %}selected{% endif %}>{{ category }}</option>
         {% endfor %}
       </select>
@@ -34,12 +34,13 @@
         <img class="article-cover-preview" src="{{ article.cover_image }}" alt="当前封面">
         <label class="checkbox"><input type="checkbox" name="clear_cover" value="1"> 删除当前封面</label>
       {% endif %}
-      <p class="form-note">只有 Fiction 需要封面；Notes 和 Poem 会自动忽略封面。</p>
+      <p class="form-note">只有 Fiction 需要封面；Essay、Notes 和 Poem 会自动忽略封面。</p>
     </div>
   </div>
   <div class="type-guides">
     <p data-guide="Fiction"><strong>Fiction</strong>：小说或故事。需要封面，摘要会用于文字页与动态页；摘要为空时会从正文自动生成。</p>
-    <p data-guide="Notes"><strong>Notes</strong>：随笔、短札或日记片段。封面会被忽略；标题或摘要为空时，系统会根据日期和正文自动生成。</p>
+    <p data-guide="Essay"><strong>Essay</strong>：随笔。封面会被忽略；前台以时间和文字的方式展示。</p>
+    <p data-guide="Notes"><strong>Notes</strong>：笔记、短札或日记片段。封面会被忽略；标题或摘要为空时，系统会根据日期和正文自动生成。</p>
     <p data-guide="Poem"><strong>Poem</strong>：诗歌。封面会被忽略；前台以时间和文字的方式展示。</p>
   </div>
   <label>摘要<textarea name="summary" rows="3" data-summary-field>{{ article.summary or '' }}</textarea></label>

@@ -55,7 +55,7 @@ app = Flask(__name__)
 app.secret_key = read_secret_key()
 init_db()
 
-TEXT_CATEGORIES = ["Fiction", "Notes", "Poem"]
+TEXT_CATEGORIES = ["Fiction", "Essay", "Notes", "Poem"]
 
 
 def slugify(value):
@@ -91,13 +91,14 @@ def normalize_article_data(form):
     if not data.get("published_at") and data["status"] == "published":
         data["published_at"] = datetime.now().strftime("%Y-%m-%d")
 
-    if category in {"Notes", "Poem"}:
+    if category in {"Essay", "Notes", "Poem"}:
         data["cover_image"] = ""
         if not data.get("summary"):
             data["summary"] = text_excerpt(data["content_markdown"], 160)
         if not data.get("title"):
             date_label = data.get("published_at") or datetime.now().strftime("%Y-%m-%d")
-            data["title"] = f"{'Poem' if category == 'Poem' else 'Note'} {date_label}"
+            fallback_prefix = {"Essay": "Essay", "Notes": "Note", "Poem": "Poem"}.get(category, "Text")
+            data["title"] = f"{fallback_prefix} {date_label}"
     elif not data.get("summary"):
         data["summary"] = text_excerpt(data["content_markdown"], 140)
 
@@ -108,7 +109,7 @@ def normalize_article_data(form):
 
 
 def apply_article_cover_upload(data, files):
-    if data.get("category") in {"Notes", "Poem"}:
+    if data.get("category") in {"Essay", "Notes", "Poem"}:
         data["cover_image"] = ""
         return data
 
@@ -252,11 +253,13 @@ def texts():
 
 
 @app.route("/texts/fiction/")
+@app.route("/texts/essay/")
 @app.route("/texts/notes/")
 @app.route("/texts/poem/")
 def text_category():
     category_map = {
         "fiction": "Fiction",
+        "essay": "Essay",
         "notes": "Notes",
         "poem": "Poem",
     }

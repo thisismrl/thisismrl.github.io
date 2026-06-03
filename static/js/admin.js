@@ -62,7 +62,7 @@ if (articleForm) {
 
   const updateArticleFields = () => {
     const value = category.value;
-    const isStreamType = value === "Notes" || value === "Poem";
+    const isStreamType = value === "Essay" || value === "Notes" || value === "Poem";
     guides.forEach((guide) => {
       guide.classList.toggle("is-active", guide.dataset.guide === value);
     });

@@ -11,9 +11,9 @@
           href="/texts/{{ category|lower }}/"
           data-category="{{ category }}"
           data-i18n
-          data-zh="{% if category == "Fiction" %}小说{% elif category == "Poem" %}诗歌{% else %}随笔{% endif %}"
-          data-en="{% if category == "Fiction" %}Novel{% elif category == "Poem" %}Poem{% else %}Journal{% endif %}"
-        >{% if category == "Fiction" %}小说{% elif category == "Poem" %}诗歌{% else %}随笔{% endif %}</a>
+          data-zh="{% if category == "Fiction" %}小说{% elif category == "Essay" %}随笔{% elif category == "Notes" %}笔记{% else %}诗歌{% endif %}"
+          data-en="{% if category == "Fiction" %}Novel{% elif category == "Essay" %}Essay{% elif category == "Notes" %}Notes{% else %}Poem{% endif %}"
+        >{% if category == "Fiction" %}小说{% elif category == "Essay" %}随笔{% elif category == "Notes" %}笔记{% else %}诗歌{% endif %}</a>
       {% endfor %}
     </nav>
   </aside>
@@ -21,7 +21,7 @@
   <div class="texts-panels">
     {% for category in categories %}
       <section class="texts-panel{% if category == active_category %} is-active{% endif %}" data-category-panel="{{ category }}">
-        {% if category in ["Notes", "Poem"] %}
+        {% if category in ["Essay", "Notes", "Poem"] %}
           <div class="notes-stream">
             {% for article in grouped[category] %}
               <a class="note-line" href="/texts/{{ article.slug }}/">
