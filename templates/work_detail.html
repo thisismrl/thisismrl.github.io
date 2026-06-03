@@ -11,12 +11,14 @@
           <span>Travel</span>
         </a>
       {% endif %}
-      {% for item in collections %}
-        <a class="works-switch{% if item.id == collection.id %} is-active{% endif %}" href="/works/{{ item.slug }}/">
-          <span>{{ item.title }}</span>
-          <span>{{ item.year or 'Undated' }}</span>
-        </a>
-      {% endfor %}
+      <span class="works-standalone-desktop">
+        {% for item in collections %}
+          <a class="works-switch{% if item.id == collection.id %} is-active{% endif %}" href="/works/{{ item.slug }}/">
+            <span>{{ item.title }}</span>
+            <span>{{ item.year or 'Undated' }}</span>
+          </a>
+        {% endfor %}
+      </span>
     </nav>
   </aside>
 
@@ -25,6 +27,19 @@
       <nav class="works-sublist is-active" aria-label="Travel works">
         {% for item in travel_collections %}
           <a class="works-switch{% if item.id == collection.id %} is-active{% endif %}" href="/works/?preview={{ item.slug }}">
+            <span>{{ item.title }}</span>
+            <span>{{ item.year or 'Undated' }}</span>
+          </a>
+        {% endfor %}
+      </nav>
+    </aside>
+  {% endif %}
+
+  {% if collections %}
+    <aside class="works-mobile-standalone detail-subnav">
+      <nav aria-label="Standalone works">
+        {% for item in collections %}
+          <a class="works-switch{% if item.id == collection.id %} is-active{% endif %}" href="/works/{{ item.slug }}/">
             <span>{{ item.title }}</span>
             <span>{{ item.year or 'Undated' }}</span>
           </a>

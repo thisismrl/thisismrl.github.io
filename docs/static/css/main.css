@@ -297,9 +297,19 @@ figcaption {
 
 .works-menu nav,
 .works-submenu nav,
+.works-mobile-standalone nav,
 .texts-menu nav {
   display: grid;
   gap: 12px;
+}
+
+.works-standalone-desktop {
+  display: grid;
+  gap: 12px;
+}
+
+.works-mobile-standalone {
+  display: none;
 }
 
 .works-sublist {
@@ -779,9 +789,9 @@ figcaption {
     right: auto;
     top: auto;
     bottom: auto;
-    width: calc(100vw - 44px);
-    height: 70vh;
-    margin: 0 22px 34px;
+    width: 100%;
+    height: min(70vh, 620px);
+    margin: 0 auto 34px;
   }
 
   .work-entry,
@@ -818,6 +828,7 @@ figcaption {
 
   .works-menu,
   .works-submenu,
+  .works-mobile-standalone,
   .texts-menu {
     position: static;
     width: auto;
@@ -826,8 +837,18 @@ figcaption {
 
   .works-menu nav,
   .works-submenu nav,
+  .works-mobile-standalone nav,
   .texts-menu nav {
     gap: 10px;
+  }
+
+  .works-standalone-desktop {
+    display: none;
+  }
+
+  .works-mobile-standalone {
+    display: block;
+    margin-top: -10px;
   }
 
   .texts-menu nav {

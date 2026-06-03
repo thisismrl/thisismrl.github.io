@@ -21,28 +21,30 @@
         </a>
       {% endif %}
 
-      {% for collection in collections %}
-        {% set image_path = '' %}
-        {% if collection.cover_filename %}
-          {% set image_path = '/uploads/covers/' ~ collection.cover_filename %}
-        {% elif collection.display_filename %}
-          {% set image_path = '/uploads/display/' ~ collection.display_filename %}
-        {% endif %}
-        <a
-          class="works-switch{% if not travel_collections and loop.first %} is-active{% endif %}"
-          href="/works/{{ collection.slug }}/"
-          data-title="{{ collection.title }}"
-          data-year="{{ collection.year or 'Undated' }}"
-          data-location="{{ collection.location or '' }}"
-          data-description="{{ collection.description or '' }}"
-          data-image="{{ image_path }}"
-          data-url="/works/{{ collection.slug }}/"
-          data-hide-subnav="1"
-        >
-          <span>{{ collection.title }}</span>
-          <span>{{ collection.year or 'Undated' }}</span>
-        </a>
-      {% endfor %}
+      <span class="works-standalone-desktop">
+        {% for collection in collections %}
+          {% set image_path = '' %}
+          {% if collection.cover_filename %}
+            {% set image_path = '/uploads/covers/' ~ collection.cover_filename %}
+          {% elif collection.display_filename %}
+            {% set image_path = '/uploads/display/' ~ collection.display_filename %}
+          {% endif %}
+          <a
+            class="works-switch{% if not travel_collections and loop.first %} is-active{% endif %}"
+            href="/works/{{ collection.slug }}/"
+            data-title="{{ collection.title }}"
+            data-year="{{ collection.year or 'Undated' }}"
+            data-location="{{ collection.location or '' }}"
+            data-description="{{ collection.description or '' }}"
+            data-image="{{ image_path }}"
+            data-url="/works/{{ collection.slug }}/"
+            data-hide-subnav="1"
+          >
+            <span>{{ collection.title }}</span>
+            <span>{{ collection.year or 'Undated' }}</span>
+          </a>
+        {% endfor %}
+      </span>
 
       {% if not travel_collections and not collections %}
         <p class="empty-note">No works yet.</p>
@@ -70,6 +72,35 @@
             data-image="{{ image_path }}"
             data-url="/works/{{ collection.slug }}/"
             data-slug="{{ collection.slug }}"
+          >
+            <span>{{ collection.title }}</span>
+            <span>{{ collection.year or 'Undated' }}</span>
+          </a>
+        {% endfor %}
+      </nav>
+    </aside>
+  {% endif %}
+
+  {% if collections %}
+    <aside class="works-mobile-standalone">
+      <nav aria-label="Standalone works">
+        {% for collection in collections %}
+          {% set image_path = '' %}
+          {% if collection.cover_filename %}
+            {% set image_path = '/uploads/covers/' ~ collection.cover_filename %}
+          {% elif collection.display_filename %}
+            {% set image_path = '/uploads/display/' ~ collection.display_filename %}
+          {% endif %}
+          <a
+            class="works-switch{% if not travel_collections and loop.first %} is-active{% endif %}"
+            href="/works/{{ collection.slug }}/"
+            data-title="{{ collection.title }}"
+            data-year="{{ collection.year or 'Undated' }}"
+            data-location="{{ collection.location or '' }}"
+            data-description="{{ collection.description or '' }}"
+            data-image="{{ image_path }}"
+            data-url="/works/{{ collection.slug }}/"
+            data-hide-subnav="1"
           >
             <span>{{ collection.title }}</span>
             <span>{{ collection.year or 'Undated' }}</span>
