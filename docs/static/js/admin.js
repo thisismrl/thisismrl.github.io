@@ -32,10 +32,18 @@ function escapeHtml(value) {
     .replaceAll(">", "&gt;");
 }
 
+function renderInlineMarkdown(value) {
+  return escapeHtml(value).replace(
+    /!\[([^\]]*)\]\(([^)]+)\)/g,
+    (_match, alt, src) => `<img src="${src}" alt="${alt}">`
+  );
+}
+
 function renderPreview(markdown) {
   const blocks = markdown.trim().split(/\n{2,}/).filter(Boolean);
   return blocks.map((block) => {
-    const safe = escapeHtml(block.trim());
+    const trimmed = block.trim();
+    const safe = renderInlineMarkdown(trimmed);
     if (safe.startsWith("### ")) return `<h3>${safe.slice(4)}</h3>`;
     if (safe.startsWith("## ")) return `<h2>${safe.slice(3)}</h2>`;
     if (safe.startsWith("# ")) return `<h1>${safe.slice(2)}</h1>`;
@@ -51,6 +59,21 @@ if (input && preview) {
   update();
 }
 
+function insertAtCursor(textarea, value) {
+  const start = textarea.selectionStart || 0;
+  const end = textarea.selectionEnd || 0;
+  const before = textarea.value.slice(0, start);
+  const after = textarea.value.slice(end);
+  const prefix = before && !before.endsWith("\n\n") ? "\n\n" : "";
+  const suffix = after && !after.startsWith("\n\n") ? "\n\n" : "";
+  const insertion = `${prefix}${value}${suffix}`;
+  textarea.value = `${before}${insertion}${after}`;
+  const cursor = start + insertion.length;
+  textarea.focus();
+  textarea.setSelectionRange(cursor, cursor);
+  textarea.dispatchEvent(new Event("input", { bubbles: true }));
+}
+
 const articleForm = document.querySelector("[data-article-form]");
 
 if (articleForm) {
@@ -58,6 +81,8 @@ if (articleForm) {
   const title = articleForm.querySelector("[data-article-title]");
   const cover = articleForm.querySelector("[data-cover-field]");
   const summary = articleForm.querySelector("[data-summary-field]");
+  const inlineImageInput = articleForm.querySelector("[data-inline-image-input]");
+  const inlineImageStatus = articleForm.querySelector("[data-inline-image-status]");
   const guides = [...articleForm.querySelectorAll("[data-guide]")];
 
   const updateArticleFields = () => {
@@ -71,7 +96,7 @@ if (articleForm) {
     }
     if (title) {
       title.required = value === "Fiction";
-      title.placeholder = isStreamType ? "可不填。为空时会根据日期自动生成。" : "";
+      title.placeholder = isStreamType ? "可不填。为空时前台不会显示标题。" : "";
     }
     if (summary) {
       summary.placeholder = isStreamType
@@ -82,6 +107,39 @@ if (articleForm) {
 
   category.addEventListener("change", updateArticleFields);
   updateArticleFields();
+
+  if (inlineImageInput && input) {
+    inlineImageInput.addEventListener("change", async () => {
+      const file = inlineImageInput.files[0];
+      if (!file) return;
+
+      const formData = new FormData();
+      formData.append("article_image", file);
+      if (inlineImageStatus) {
+        inlineImageStatus.textContent = "正在上传图片...";
+      }
+
+      try {
+        const response = await fetch("/admin/articles/upload-image", {
+          method: "POST",
+          body: formData,
+        });
+        const result = await response.json();
+        if (!response.ok) {
+          throw new Error(result.error || "图片上传失败。");
+        }
+        insertAtCursor(input, result.markdown);
+        inlineImageInput.value = "";
+        if (inlineImageStatus) {
+          inlineImageStatus.textContent = "图片已插入正文。你可以修改方括号里的图片说明文字。";
+        }
+      } catch (error) {
+        if (inlineImageStatus) {
+          inlineImageStatus.textContent = error.message;
+        }
+      }
+    });
+  }
 }
 
 document.querySelectorAll("[data-sortable-list]").forEach((list) => {

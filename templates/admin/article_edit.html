@@ -39,11 +39,17 @@
   </div>
   <div class="type-guides">
     <p data-guide="Fiction"><strong>Fiction</strong>：小说或故事。需要封面，摘要会用于文字页与动态页；摘要为空时会从正文自动生成。</p>
-    <p data-guide="Essay"><strong>Essay</strong>：随笔。封面会被忽略；前台以时间和文字的方式展示。</p>
-    <p data-guide="Notes"><strong>Notes</strong>：笔记、短札或日记片段。封面会被忽略；标题或摘要为空时，系统会根据日期和正文自动生成。</p>
-    <p data-guide="Poem"><strong>Poem</strong>：诗歌。封面会被忽略；前台以时间和文字的方式展示。</p>
+    <p data-guide="Essay"><strong>Essay</strong>：随笔。封面会被忽略；标题可不填，前台以时间和文字的方式展示。</p>
+    <p data-guide="Notes"><strong>Notes</strong>：笔记、短札或日记片段。封面会被忽略；标题可不填，前台左侧日期会作为时间标记。</p>
+    <p data-guide="Poem"><strong>Poem</strong>：诗歌。封面会被忽略；标题可不填，前台以时间和文字的方式展示。</p>
   </div>
   <label>摘要<textarea name="summary" rows="3" data-summary-field>{{ article.summary or '' }}</textarea></label>
+  <div class="inline-image-tool" data-inline-image-tool>
+    <label>正文插图
+      <input type="file" name="article_image" accept="image/*" data-inline-image-input>
+    </label>
+    <p class="form-note" data-inline-image-status>选择图片后会自动上传，并把 Markdown 图片语法插入到正文光标位置。</p>
+  </div>
   <div class="editor-layout">
     <label>Markdown
       <textarea id="markdown-input" name="content_markdown" rows="18">{{ article.content_markdown or '' }}</textarea>
@@ -68,7 +74,9 @@
 - 列表项
 - 列表项
 
-[链接文字](https://example.com)</pre>
+[链接文字](https://example.com)
+
+![图片说明](/uploads/display/example.webp)</pre>
   </details>
   <div class="form-actions">
     <button type="submit">保存</button>

@@ -14,7 +14,7 @@
   {% for article in articles %}
     <div class="table-row">
       <div>
-        <strong>{{ article.title }}</strong>
+        <strong>{{ article.title or '无标题' }}</strong>
         <span>{{ article.category }} / {{ article.slug }} / {{ article.published_at }}</span>
       </div>
       <div class="row-actions">

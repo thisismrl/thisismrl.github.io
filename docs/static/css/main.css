@@ -706,6 +706,11 @@ figcaption {
   margin: 0 0 1.75em;
 }
 
+.prose img {
+  max-width: 100%;
+  margin: 2.4em 0;
+}
+
 .poem-prose {
   line-height: 2.05;
 }

@@ -8,6 +8,7 @@ from flask import (
     Flask,
     abort,
     flash,
+    jsonify,
     redirect,
     render_template,
     request,
@@ -103,9 +104,7 @@ def normalize_article_data(form):
         if not data.get("summary"):
             data["summary"] = text_excerpt(data["content_markdown"], 160)
         if not data.get("title"):
-            date_label = data.get("published_at") or datetime.now().strftime("%Y-%m-%d")
-            fallback_prefix = {"Essay": "Essay", "Notes": "Note", "Poem": "Poem"}.get(category, "Text")
-            data["title"] = f"{fallback_prefix} {date_label}"
+            data["title"] = ""
     elif not data.get("summary"):
         data["summary"] = text_excerpt(data["content_markdown"], 140)
 
@@ -129,6 +128,19 @@ def apply_article_cover_upload(data, files):
         data["cover_image"] = f"/uploads/covers/{image_data['cover_filename']}"
 
     return data
+
+
+def upload_article_inline_image(file_storage):
+    if not file_storage or not file_storage.filename:
+        raise ValueError("请选择一张图片。")
+    image_data = save_uploaded_image(file_storage)
+    alt_text = Path(file_storage.filename).stem.strip() or "image"
+    alt_text = alt_text.replace("[", "").replace("]", "")
+    url = f"/uploads/display/{image_data['display_filename']}"
+    return {
+        "url": url,
+        "markdown": f"![{alt_text}]({url})",
+    }
 
 
 def login_required(view):
@@ -573,6 +585,16 @@ def admin_photo_delete(photo_id):
 @login_required
 def admin_articles():
     return render_template("admin/articles.html", articles=article_list())
+
+
+@app.route("/admin/articles/upload-image", methods=["POST"])
+@login_required
+def admin_article_upload_image():
+    try:
+        result = upload_article_inline_image(request.files.get("article_image"))
+        return jsonify(result)
+    except Exception as exc:
+        return jsonify({"error": str(exc)}), 400
 
 
 @app.route("/admin/articles/new", methods=["GET", "POST"])

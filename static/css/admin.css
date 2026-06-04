@@ -358,6 +358,15 @@ label {
   gap: 10px;
 }
 
+.inline-image-tool {
+  display: grid;
+  gap: 8px;
+  margin: 18px 0;
+  padding: 14px;
+  border: 1px solid var(--line);
+  background: #fff;
+}
+
 .article-cover-preview {
   width: min(280px, 100%);
   max-height: 220px;
@@ -510,6 +519,11 @@ label {
   padding: 18px;
   font-family: Georgia, "Times New Roman", serif;
   line-height: 1.9;
+}
+
+.markdown-preview img {
+  max-width: 100%;
+  margin: 18px 0;
 }
 
 .markdown-help {

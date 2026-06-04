@@ -37,7 +37,7 @@
     <h2>最近文字</h2>
     {% for article in recent_articles %}
       <a class="admin-row" href="/admin/articles/{{ article.id }}/edit">
-        <span>{{ article.title }}</span>
+        <span>{{ article.title or '无标题' }}</span>
         <span>{{ article.status }}</span>
       </a>
     {% else %}
