@@ -5,6 +5,7 @@
   --subtle: #aaa2a0;
   --line: #e0e6e3;
   --soft: #eaefec;
+  --sans: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Hiragino Sans", "Microsoft YaHei", "Noto Sans CJK SC", Arial, sans-serif;
 }
 
 * {
@@ -19,11 +20,11 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
-  font-family: "Helvetica Neue", Helvetica, "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Microsoft YaHei", Arial, sans-serif;
+  font-family: var(--sans);
   font-size: 13px;
   line-height: 1.72;
   letter-spacing: 0;
-  font-weight: 300;
+  font-weight: 400;
   -webkit-font-smoothing: antialiased;
   text-rendering: geometricPrecision;
 }
@@ -703,10 +704,10 @@ figcaption {
 
 .prose {
   width: min(580px, 100%);
-  font-family: "Helvetica Neue", Helvetica, "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Microsoft YaHei", Arial, sans-serif;
+  font-family: var(--sans);
   font-size: 14px;
   line-height: 2;
-  font-weight: 300;
+  font-weight: 400;
 }
 
 .prose p {
