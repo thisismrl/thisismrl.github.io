@@ -24,7 +24,7 @@ body {
   font-size: 13px;
   line-height: 1.72;
   letter-spacing: 0;
-  font-weight: 400;
+  font-weight: 300;
   -webkit-font-smoothing: antialiased;
   text-rendering: geometricPrecision;
 }
@@ -707,7 +707,7 @@ figcaption {
   font-family: var(--sans);
   font-size: 14px;
   line-height: 2;
-  font-weight: 400;
+  font-weight: 300;
 }
 
 .prose p {
