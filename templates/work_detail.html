@@ -8,14 +8,12 @@
       {% if travel_collections %}
         <a class="works-project-switch{% if not collection.show_in_series %} is-active{% endif %}" href="/works/">
           <span>旅行特辑</span>
-          <span>Travel</span>
         </a>
       {% endif %}
       <span class="works-standalone-desktop">
         {% for item in collections %}
           <a class="works-switch{% if item.id == collection.id %} is-active{% endif %}" href="/works/{{ item.slug }}/">
             <span>{{ item.title }}</span>
-            <span>{{ item.year or 'Undated' }}</span>
           </a>
         {% endfor %}
       </span>
@@ -41,7 +39,6 @@
         {% for item in collections %}
           <a class="works-switch{% if item.id == collection.id %} is-active{% endif %}" href="/works/{{ item.slug }}/">
             <span>{{ item.title }}</span>
-            <span>{{ item.year or 'Undated' }}</span>
           </a>
         {% endfor %}
       </nav>
