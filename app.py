@@ -173,7 +173,7 @@ def uploaded_cover(filename):
 def home():
     featured_collections = collection_list(featured=True)
     featured_photos = photo_list(featured=True)
-    hero_photos = featured_photos[:8]
+    hero_photos = featured_photos
     if not hero_photos:
         for collection in featured_collections:
             cover_name = collection.get("cover_filename") or collection.get("display_filename")
