@@ -457,14 +457,6 @@ figcaption {
   margin: 0 0 clamp(86px, 12vw, 156px);
 }
 
-.photo-sequence figure:nth-child(2n) {
-  margin-left: min(15vw, 170px);
-}
-
-.photo-sequence figure:nth-child(3n) {
-  margin-left: min(6vw, 70px);
-}
-
 .photo-sequence img {
   max-width: 100%;
   max-height: 86vh;
@@ -932,11 +924,6 @@ figcaption {
   .note-line,
   .inline-reading-item {
     gap: 3px;
-  }
-
-  .photo-sequence figure:nth-child(2n),
-  .photo-sequence figure:nth-child(3n) {
-    margin-left: 0;
   }
 
   .prose {
