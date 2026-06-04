@@ -131,5 +131,27 @@
       </div>
     </div>
   {% endif %}
+
+  <div class="works-mobile-cards" aria-label="Works mobile list">
+    {% for collection in travel_collections + collections %}
+      {% set image_path = '' %}
+      {% if collection.cover_filename %}
+        {% set image_path = '/uploads/covers/' ~ collection.cover_filename %}
+      {% elif collection.display_filename %}
+        {% set image_path = '/uploads/display/' ~ collection.display_filename %}
+      {% endif %}
+      <a class="works-mobile-card" href="/works/{{ collection.slug }}/">
+        <span class="works-mobile-thumb">
+          {% if image_path %}
+            <img src="{{ image_path }}" alt="{{ collection.title }}">
+          {% endif %}
+        </span>
+        <span class="works-mobile-title">{{ collection.title }}</span>
+        {% if collection.year or collection.location %}
+          <span class="works-mobile-meta">{{ collection.year }}{% if collection.location %} / {{ collection.location }}{% endif %}</span>
+        {% endif %}
+      </a>
+    {% endfor %}
+  </div>
 </section>
 {% endblock %}

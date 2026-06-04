@@ -403,6 +403,43 @@ figcaption {
   margin: 1px 0 0;
 }
 
+.works-mobile-cards {
+  display: none;
+}
+
+.works-mobile-card {
+  color: var(--muted);
+}
+
+.works-mobile-thumb {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background: var(--soft);
+}
+
+.works-mobile-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.works-mobile-title,
+.works-mobile-meta {
+  display: block;
+}
+
+.works-mobile-title {
+  margin-top: 11px;
+  color: var(--text);
+}
+
+.works-mobile-meta {
+  margin-top: 2px;
+  color: var(--subtle);
+  font-size: 12px;
+}
+
 .series-meta {
   color: var(--muted);
 }
@@ -868,19 +905,35 @@ figcaption {
   }
 
   .works-browser {
-    display: grid;
-    grid-template-columns: minmax(96px, 38vw) minmax(0, 1fr);
-    column-gap: 16px;
-    row-gap: 18px;
+    display: block;
     width: 100%;
     margin-left: 0;
-    align-items: start;
   }
 
   .work-scroll,
   .texts-browser,
   .news-page {
     margin-left: 0;
+  }
+
+  .work-scroll {
+    width: 100%;
+  }
+
+  .works-browser > .works-menu,
+  .works-browser > .works-submenu,
+  .works-browser > .works-mobile-standalone,
+  .works-browser > .works-preview,
+  .work-detail > .works-menu,
+  .work-detail > .works-submenu,
+  .work-detail > .works-mobile-standalone {
+    display: none;
+  }
+
+  .texts-menu {
+    position: static;
+    width: auto;
+    margin-bottom: 0;
   }
 
   .works-menu,
@@ -890,36 +943,6 @@ figcaption {
     position: static;
     width: auto;
     margin-bottom: 0;
-  }
-
-  .works-menu {
-    grid-column: 1 / -1;
-  }
-
-  .works-submenu {
-    grid-column: 1;
-    grid-row: 2;
-  }
-
-  .works-preview {
-    grid-column: 2;
-    grid-row: 2 / span 2;
-    width: 100%;
-  }
-
-  .works-preview-image {
-    margin-bottom: 10px;
-  }
-
-  .works-preview-image img {
-    width: 100%;
-    max-height: 62vh;
-    object-fit: contain;
-    object-position: left top;
-  }
-
-  .works-preview-caption {
-    font-size: 11px;
   }
 
   .works-menu nav,
@@ -935,8 +958,36 @@ figcaption {
 
   .works-mobile-standalone {
     display: block;
-    grid-column: 1;
     margin-top: 0;
+  }
+
+  .works-browser > .works-mobile-standalone {
+    display: none;
+  }
+
+  .works-mobile-cards {
+    display: grid;
+    gap: 38px;
+    width: 100%;
+  }
+
+  .works-mobile-card {
+    display: block;
+  }
+
+  .photo-sequence {
+    width: 100%;
+  }
+
+  .photo-sequence figure {
+    width: 100%;
+    margin-bottom: 72px;
+  }
+
+  .photo-sequence img {
+    width: 100%;
+    max-height: none;
+    object-fit: contain;
   }
 
   .texts-menu nav {
