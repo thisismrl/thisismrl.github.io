@@ -510,7 +510,7 @@ def admin_home_slideshow():
         save_home_slideshow(selected_ids, order_map)
         flash("首页轮播已更新。", "success")
         return redirect(url_for("admin_home_slideshow"))
-    return render_template("admin/home_slideshow.html", photos=photo_list())
+    return render_template("admin/home_slideshow.html", photos=photo_list(featured=True))
 
 
 @app.route("/admin/photos/upload", methods=["GET", "POST"])

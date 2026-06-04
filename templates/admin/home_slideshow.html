@@ -4,7 +4,7 @@
 {% block content %}
 <section class="admin-title">
   <h1>首页轮播</h1>
-  <p>选择哪些照片显示在首页大图轮播中，并调整它们的播放顺序。勾选多少张，首页就轮播多少张。</p>
+  <p>这里只显示已经加入首页轮播的照片。要添加新照片，请进入对应作品集，在照片下方勾选“加入首页轮播”。</p>
 </section>
 
 <form class="edit-form" method="post">
@@ -18,8 +18,8 @@
         </span>
         <span class="slideshow-fields">
           <span class="checkbox">
-            <input type="checkbox" name="selected_photo" value="{{ photo.id }}" {% if photo.is_featured %}checked{% endif %}>
-            加入首页轮播
+            <input type="checkbox" name="selected_photo" value="{{ photo.id }}" checked>
+            保留在首页轮播
           </span>
           <span>{{ photo.title or photo.filename }}</span>
           <small>{{ photo.collection_title }}{% if photo.shot_date %} / {{ photo.shot_date }}{% endif %}</small>
@@ -29,7 +29,7 @@
         </span>
       </label>
     {% else %}
-      <p class="empty">还没有照片。请先上传照片。</p>
+      <p class="empty">还没有首页轮播照片。请先进入作品集，在想展示的照片下方勾选“加入首页轮播”。</p>
     {% endfor %}
   </div>
 
