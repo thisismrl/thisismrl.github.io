@@ -7,7 +7,7 @@
 {% set initial = first_travel or first_collection %}
 {% set initial_url = '/works/' ~ initial.slug ~ '/' if initial else '#' %}
 
-<section class="works-browser three-column-works" data-works-browser>
+<section class="works-browser three-column-works has-mobile-cards" data-works-browser>
   <aside class="works-menu">
     <nav aria-label="Works">
       {% if travel_collections %}

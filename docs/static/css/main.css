@@ -920,10 +920,10 @@ figcaption {
     width: 100%;
   }
 
-  .works-browser > .works-menu,
-  .works-browser > .works-submenu,
-  .works-browser > .works-mobile-standalone,
-  .works-browser > .works-preview,
+  .works-browser.has-mobile-cards > .works-menu,
+  .works-browser.has-mobile-cards > .works-submenu,
+  .works-browser.has-mobile-cards > .works-mobile-standalone,
+  .works-browser.has-mobile-cards > .works-preview,
   .work-detail > .works-menu,
   .work-detail > .works-submenu,
   .work-detail > .works-mobile-standalone {
@@ -961,7 +961,7 @@ figcaption {
     margin-top: 0;
   }
 
-  .works-browser > .works-mobile-standalone {
+  .works-browser.has-mobile-cards > .works-mobile-standalone {
     display: none;
   }
 

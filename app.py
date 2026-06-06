@@ -57,6 +57,7 @@ app.secret_key = read_secret_key()
 init_db()
 
 TEXT_CATEGORIES = ["Fiction", "Essay", "Notes", "Poem"]
+ASSET_VERSION = "20260606-mobile-works-2"
 
 
 def slugify(value):
@@ -168,7 +169,11 @@ def remove_photo_files(photo):
 
 @app.context_processor
 def inject_globals():
-    return {"site_settings": all_settings(), "current_year": datetime.now().year}
+    return {
+        "site_settings": all_settings(),
+        "current_year": datetime.now().year,
+        "asset_version": ASSET_VERSION,
+    }
 
 
 @app.route("/uploads/display/<path:filename>")
