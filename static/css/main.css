@@ -914,6 +914,12 @@ figcaption {
     margin-left: 0;
   }
 
+  .work-detail,
+  .with-fixed-subnav {
+    width: 100%;
+    max-width: 100%;
+  }
+
   .work-scroll {
     width: 100%;
   }

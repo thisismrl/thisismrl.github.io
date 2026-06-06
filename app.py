@@ -57,7 +57,7 @@ app.secret_key = read_secret_key()
 init_db()
 
 TEXT_CATEGORIES = ["Fiction", "Essay", "Notes", "Poem"]
-ASSET_VERSION = "20260606-mobile-works-3"
+ASSET_VERSION = "20260606-mobile-works-4"
 
 
 def slugify(value):
